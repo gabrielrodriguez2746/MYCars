@@ -1,4 +1,4 @@
-package com.mycars.di.modules
+package com.mycars.di.modules.app
 
 import com.mycars.base.config.BaseConfiguration
 import com.mycars.base.providers.ResourceProvider

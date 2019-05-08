@@ -3,7 +3,8 @@ package com.mycars.di.component
 import com.mycars.base.InjectableApplication
 import com.mycars.base.di.component.BaseComponent
 import com.mycars.base.di.modules.AppModule
-import com.mycars.di.modules.AppConfigurationModule
+import com.mycars.di.modules.app.AppActivityBuilder
+import com.mycars.di.modules.app.AppConfigurationModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Component(modules = [
     AndroidSupportInjectionModule::class,
     AppConfigurationModule::class,
+    AppActivityBuilder::class,
     AppModule::class
 ])
 interface MainComponent : BaseComponent {
