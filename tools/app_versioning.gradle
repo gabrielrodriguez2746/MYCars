@@ -1,0 +1,72 @@
+ext.TAG_VERSION_NAME = 'versionName'
+ext.TAG_VERSION_CODE = 'versionCode'
+
+ext.getAppVersionCode = {
+    getVersionProps(getAppVersionFile())[TAG_VERSION_CODE].toInteger()
+}
+
+ext.getAppVersionName = {
+    getVersionProps(getAppVersionFile())[TAG_VERSION_NAME].toString()
+}
+
+static def getVersionProps(File versionPropsFile) {
+    def versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+    return versionProps
+}
+
+def getAppVersionFile() {
+    return file(getAppVersionPath())
+}
+
+private String getAppVersionPath() {
+    return "$project.rootDir/tools/app_version_code.properties"
+}
+
+private Integer getVersionNameMinor() {
+    return (getVersionProps(getAppVersionFile())[TAG_VERSION_NAME] =~ /\d+/)[1].toInteger()
+}
+
+private Integer getVersionNameMajor() {
+    return (getVersionProps(getAppVersionFile())[TAG_VERSION_NAME] =~ /\d+/)[0].toInteger()
+}
+
+private void saveVersionChanges(String versionName, Integer versionCode) {
+    def versionProps = getVersionProps(getAppVersionFile())
+    versionProps[TAG_VERSION_NAME] = versionName
+    versionProps[TAG_VERSION_CODE] = versionCode.toString()
+    versionProps.store(getAppVersionFile().newWriter(), null)
+}
+
+private static String generateVersionName(Integer versionNameMajor,
+                                          Integer versionNameMinor,
+                                          Integer versionCode) {
+    String versionName = "${versionNameMajor}.${versionNameMinor}"
+    if (versionCode != null) {
+        versionName += ".${versionCode}"
+    }
+    return versionName
+}
+
+private static Integer getBuildNumber() {
+    def buildNumber
+    if (System.getenv().containsKey("BITRISE_BUILD_NUMBER")) {
+        buildNumber = System.getenv("BITRISE_BUILD_NUMBER")
+    }
+    if (buildNumber != null) {
+        buildNumber = buildNumber.toInteger()
+    } else {
+        buildNumber = 1
+    }
+    return buildNumber
+}
+
+task incrementVersionCode {
+    doLast {
+        def versionCode = getBuildNumber()
+        def versionNameMajor = getVersionNameMajor()
+        def versionNameMinor = getVersionNameMinor()
+        def versionName = generateVersionName(versionNameMajor, versionNameMinor, versionCode)
+        saveVersionChanges(versionName, versionCode)
+    }
+}

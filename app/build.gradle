@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: "$project.rootDir/tools/ktlint.gradle"
+apply from: "$project.rootDir/tools/app_versioning.gradle"
 
 android {
 
@@ -10,11 +11,11 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.mycars"
+        applicationId "com.mycars.maps"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0.0"
+        versionCode getAppVersionCode()
+        versionName getAppVersionName()
     }
     buildTypes {
         release {
