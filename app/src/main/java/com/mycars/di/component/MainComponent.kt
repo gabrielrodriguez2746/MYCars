@@ -3,6 +3,7 @@ package com.mycars.di.component
 import com.mycars.base.InjectableApplication
 import com.mycars.base.di.component.BaseComponent
 import com.mycars.base.di.modules.AppModule
+import com.mycars.base.di.modules.FactoryModule
 import com.mycars.di.modules.app.AppActivityBuilder
 import com.mycars.di.modules.app.AppConfigurationModule
 import com.mycars.di.modules.app.AppNetworkModule
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     AndroidSupportInjectionModule::class,
+    FactoryModule::class,
     AppConfigurationModule::class,
     AppActivityBuilder::class,
     AppModule::class,

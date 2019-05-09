@@ -35,12 +35,12 @@ abstract class BaseListAdapter<T : RecyclerItem<*, *>> :
     abstract fun getViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<*, *>
 }
 
-interface RecyclerItem<out R, out S> {
-    fun getType(): Int
-    fun getId(): Int
-    fun getComparator(): Any?
-    fun getContent(): R
-    fun getDiffResolver(): S?
+abstract class RecyclerItem<out R, out S> {
+    abstract fun getId(): Int
+    abstract fun getComparator(): Any?
+    abstract fun getContent(): R
+    open fun getType(): Int = 1
+    open fun getDiffResolver(): S? = null
 }
 
 class RecyclerItemDiffCallback<T : RecyclerItem<*, *>> : DiffUtil.ItemCallback<T>() {
@@ -57,5 +57,5 @@ class RecyclerItemDiffCallback<T : RecyclerItem<*, *>> : DiffUtil.ItemCallback<T
 abstract class ViewHolder<T : Any, R : Any>(view: View) : RecyclerView.ViewHolder(view) {
     abstract fun bind(item: T)
 
-    abstract fun updateBind(item: R)
+    open fun updateBind(item: R) = Unit
 }
