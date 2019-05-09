@@ -37,13 +37,16 @@ dependencies {
 
     implementation project(':base')
     implementation project(':baseui')
+    implementation project(':data')
     implementation project(':launcher')
     implementation project(':carsnetwork')
-    implementation project(':data')
+    implementation project(':carslist')
 
     implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXVersion"
     implementation "androidx.core:core-ktx:$rootProject.ext.coreXVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
+    implementation "android.arch.navigation:navigation-fragment:$rootProject.ext.navigationVersion"
+    implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.ext.navigationVersion"
 
     // Network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"

@@ -1,4 +1,4 @@
-package com.mycars.network.di.rest
+package com.mycars.network.rest
 
 import com.mycars.data.models.cars.CarWrapper
 import io.reactivex.Single

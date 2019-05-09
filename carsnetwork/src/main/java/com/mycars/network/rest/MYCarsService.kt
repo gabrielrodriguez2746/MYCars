@@ -1,4 +1,4 @@
-package com.mycars.network.di.rest
+package com.mycars.network.rest
 
 import retrofit2.Retrofit
 import javax.inject.Inject
