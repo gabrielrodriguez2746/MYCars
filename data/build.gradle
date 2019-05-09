@@ -19,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -35,7 +36,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXVersion"
+    implementation project(':base')
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"
@@ -43,20 +44,13 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.ext.daggerVersion"
 
-    // Network
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    // Gson
     implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
 
-    // Rx
-    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    // Room
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
 
-    // Network
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
 
     // Test
     testImplementation "io.mockk:mockk:$rootProject.ext.mockkVersion"
@@ -65,4 +59,5 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:$rootProject.ext.junit5Version"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.ext.junit5Version"
+
 }

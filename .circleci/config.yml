@@ -88,6 +88,17 @@ jobs:
           name: Run Ktlint analyzer
           command: ./gradlew ktlint
 
+  lint:
+    <<: *config_android
+    steps:
+      - checkout
+      - <<: *attach_workspace
+      - <<: *gen_cache_key
+      - <<: *restore_cache
+      - run:
+          name: Run lint analyzer
+          command: ./gradlew lintDebug
+
 workflows:
   version: 2
   check:
@@ -102,5 +113,8 @@ workflows:
           requires:
             - config_cache
       - ktlint:
+          requires:
+            - config_cache
+      - lint:
           requires:
             - config_cache
