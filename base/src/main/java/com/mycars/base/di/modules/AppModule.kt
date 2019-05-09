@@ -22,9 +22,4 @@ object AppModule {
     @JvmStatic
     fun providesApplication(app: InjectableApplication): Application = app
 
-    @Provides
-    @Singleton
-    @JvmStatic
-    fun provideGson() : Gson = GsonBuilder().create()
-
 }
