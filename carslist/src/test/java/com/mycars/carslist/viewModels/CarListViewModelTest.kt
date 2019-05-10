@@ -6,7 +6,7 @@ import com.mycars.basetest.InstantExecutorExtension
 import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
-import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnServerError
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
 import com.mycars.data.models.cars.Car
 import io.kotlintest.matchers.types.shouldBeInstanceOf
 import io.mockk.every
@@ -79,7 +79,7 @@ class CarListViewModelTest {
         fun `with error from repository`() {
             every { repository.getSingleListData(any()) } returns Single.error(Throwable())
             viewModel.onCreate()
-            viewModel.events.value.shouldBeInstanceOf<OnServerError>()
+            viewModel.events.value.shouldBeInstanceOf<OnRequestError>()
         }
     }
 

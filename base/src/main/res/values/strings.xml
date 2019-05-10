@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base.generic_error">It was an error in our server, please try again in a few minutes.</string>
+    <string name="base.network_error">Please check your Internet connection.</string>
+</resources>
