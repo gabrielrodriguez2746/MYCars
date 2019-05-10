@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="160dp"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
 
@@ -19,12 +19,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="@dimen/space_medium"
+        app:layout_constraintDimensionRatio="1.1"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/glReference"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@color/colorPrimary" />
+        tools:srcCompat="@drawable/ic_taxi" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvCoordinates"

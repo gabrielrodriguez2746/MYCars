@@ -12,7 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import com.mycars.baseui.decorators.MediaSpaceDecoration
 import com.mycars.baseui.generics.BaseListAdapter
 import com.mycars.baseui.generics.ViewHolder
 import com.mycars.baseui.generics.addRippleForeground
@@ -25,6 +26,7 @@ import com.mycars.carslist.viewModels.CarListViewModel
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
 import com.mycars.carslist.widget.CarHorizontalItem
+import com.mycars.carslist.widget.CarVerticalItem
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -41,7 +43,8 @@ class CarListFragment : Fragment() {
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         metrics
     }
-    private val itemHeight by lazy { (displayMetrics.heightPixels * 0.25).toInt() }
+    private val itemVerticalHeight by lazy { (displayMetrics.heightPixels * 0.33).toInt() }
+    private val itemHorizontalHeight by lazy { (displayMetrics.heightPixels * 0.25).toInt() }
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -53,9 +56,10 @@ class CarListFragment : Fragment() {
             DataBindingUtil.inflate<FragmentCarListBinding>(inflater, R.layout.fragment_car_list, container, false)
         ) {
             recyclerConfiguration = RecyclerViewConfiguration(
-                layoutManager = LinearLayoutManager(context),
+                layoutManager = GridLayoutManager(context, 2),
                 isNestedScroll = true,
-                adapter = itemsAdapter
+                adapter = itemsAdapter,
+                decorator = MediaSpaceDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
             )
             root
         }
@@ -74,17 +78,26 @@ class CarListFragment : Fragment() {
         }
     }
 
+    // TODO All this manage it with delegates
     inner class CarListAdapter : BaseListAdapter<CarRecyclerItem>() {
         override fun getViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<*, *> {
-            return CarListViewHolder(CarHorizontalItem(parent.context).apply {
-                isClickable = true
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight)
-                addRippleForeground()
-            })
+            return if (viewType == 1) {
+                CarListVerticalViewHolder(CarVerticalItem(parent.context).apply {
+                    isClickable = true
+                    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemVerticalHeight)
+                    addRippleForeground()
+                })
+            } else {
+                CarListHorizontalViewHolder(CarHorizontalItem(parent.context).apply {
+                    isClickable = true
+                    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHorizontalHeight)
+                    addRippleForeground()
+                })
+            }
         }
     }
 
-    inner class CarListViewHolder(private val view: CarHorizontalItem) : ViewHolder<CarWidgetItem, Any>(view) {
+    inner class CarListVerticalViewHolder(private val view: CarVerticalItem) : ViewHolder<CarWidgetItem, Any>(view) {
 
         override fun bind(item: CarWidgetItem) {
             with(view) {
@@ -95,6 +108,18 @@ class CarListFragment : Fragment() {
                 setOnClickListener { Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show() }
             }
         }
+    }
 
+    inner class CarListHorizontalViewHolder(private val view: CarHorizontalItem) : ViewHolder<CarWidgetItem, Any>(view) {
+
+        override fun bind(item: CarWidgetItem) {
+            with(view) {
+                textViewCoordinates.text = item.coordinates
+                textViewType.text = item.type
+                textViewHeading.text = item.heading
+                imageCar.setImageResource(item.imageType)
+                setOnClickListener { Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show() }
+            }
+        }
     }
 }

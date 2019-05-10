@@ -4,6 +4,7 @@
     <dimen name="spacing_xmicro">1dp</dimen>
     <dimen name="space_small">8dp</dimen>
     <dimen name="space_medium">16dp</dimen>
+    <dimen name="space_large">24dp</dimen>
 
     <dimen name="card_elevation">5dp</dimen>
 
