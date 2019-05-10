@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlin_version"
+
+    implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
+    implementation "io.kotlintest:kotlintest-runner-junit4:$rootProject.ext.kotlinTestVersion"
+    implementation "org.junit.jupiter:junit-jupiter-api:$rootProject.ext.junit5Version"
+    implementation "org.junit.jupiter:junit-jupiter-params:$rootProject.ext.junit5Version"
+    implementation "androidx.arch.core:core-testing:$architectureCoreTestingVersion"
+}

@@ -22,7 +22,7 @@ class CarListViewModel @Inject constructor(
     private val repository: @JvmSuppressWildcards BaseRepository<Any, Car>
 ) : ViewModel(), LifecycleObserver {
 
-    private val initialDisposables = CompositeDisposable()
+    internal val initialDisposables = CompositeDisposable()
     private val _events = MutableLiveData<CarListViewModelEvents>()
 
     val events: LiveData<CarListViewModelEvents> get() = _events
@@ -32,11 +32,16 @@ class CarListViewModel @Inject constructor(
         initialDisposables += repository.getSingleListData(null)
             .map { it.map { car -> CarRecyclerItem(mapper.getFromElement(car)) } }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
-                _events.postValue(
-                    CarListViewModelEvents.OnItemsUpdated(it)
-                )
-            }
+            .subscribeBy  (onError = {
+                _events.postValue(CarListViewModelEvents.OnServerError)
+            }, onSuccess = {
+                if (it.isEmpty()) {
+                    _events.postValue(CarListViewModelEvents.OnEmptyResults)
+                } else {
+                    _events.postValue(CarListViewModelEvents.OnItemsUpdated(it))
+                }
+
+            })
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -45,6 +50,8 @@ class CarListViewModel @Inject constructor(
     }
 
     sealed class CarListViewModelEvents {
+        object OnServerError : CarListViewModelEvents() // TODO From a couple PR errors will have structure
+        object OnEmptyResults : CarListViewModelEvents()
         class OnItemsUpdated(val items: List<CarRecyclerItem>) : CarListViewModelEvents()
     }
 

@@ -74,6 +74,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
 
     // Test
+    testImplementation project(':basetest')
     testImplementation "io.mockk:mockk:$rootProject.ext.mockkVersion"
     testImplementation "io.kotlintest:kotlintest-runner-junit4:$rootProject.ext.kotlinTestVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.ext.junit5Version"

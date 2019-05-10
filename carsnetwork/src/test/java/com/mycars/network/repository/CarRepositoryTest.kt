@@ -3,7 +3,6 @@ package com.mycars.network.repository
 import com.mycars.data.models.cars.Car
 import com.mycars.data.models.cars.CarWrapper
 import com.mycars.network.rest.CarsService
-import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -13,6 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
@@ -33,13 +33,26 @@ class CarRepositoryTest {
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
     }
 
-    @Test
-    fun `get single list data`() {
-        val output = listOf<Car>()
-        every { service.getCarWrapper() } returns Single.just(CarWrapper(output))
-        repository.getSingleListData(null)
-            .test()
-            .assertValue { it == output }
+    @Nested
+    inner class `get single list data` {
+
+        @Test
+        fun success() {
+            val output = listOf<Car>()
+            every { service.getCarWrapper() } returns Single.just(CarWrapper(output))
+            repository.getSingleListData(null)
+                .test()
+                .assertValue { it == output }
+        }
+
+        @Test
+        fun error() {
+            val output = Throwable()
+            every { service.getCarWrapper() } returns Single.error(output)
+            repository.getSingleListData(null)
+                .test()
+                .assertError(output)
+        }
     }
 
     @AfterAll
