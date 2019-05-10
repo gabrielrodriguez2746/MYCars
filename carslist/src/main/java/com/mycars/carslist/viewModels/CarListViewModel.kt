@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
+import com.mycars.base.mappers.BaseMapper
 import com.mycars.base.repository.BaseRepository
-import com.mycars.carslist.R
 import com.mycars.carslist.models.CarRecyclerItem
 import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.data.models.cars.Car
@@ -17,11 +17,12 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
-class CarListViewModel @Inject constructor(private val repository: @JvmSuppressWildcards BaseRepository<Any, Car>) :
-    ViewModel(),
-    LifecycleObserver {
+class CarListViewModel @Inject constructor(
+    private val mapper: @JvmSuppressWildcards BaseMapper<Car, CarWidgetItem>,
+    private val repository: @JvmSuppressWildcards BaseRepository<Any, Car>
+) : ViewModel(), LifecycleObserver {
 
-    private val initialDisposables = CompositeDisposable()
+    internal val initialDisposables = CompositeDisposable()
     private val _events = MutableLiveData<CarListViewModelEvents>()
 
     val events: LiveData<CarListViewModelEvents> get() = _events
@@ -29,18 +30,18 @@ class CarListViewModel @Inject constructor(private val repository: @JvmSuppressW
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         initialDisposables += repository.getSingleListData(null)
-            .map {
-                it.map { car ->
-                    // TODO Delegate the real thing to a mapper and test it, add the other icon, adjust icon colors
-                    CarRecyclerItem(CarWidgetItem(car.id, R.drawable.ic_taxi, car.type, "${car.coordinate}", "${car.heading}"))
-                }
-            }
+            .map { it.map { car -> CarRecyclerItem(mapper.getFromElement(car)) } }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
-                _events.postValue(
-                    CarListViewModelEvents.OnItemsUpdated(it)
-                )
-            }
+            .subscribeBy  (onError = {
+                _events.postValue(CarListViewModelEvents.OnServerError)
+            }, onSuccess = {
+                if (it.isEmpty()) {
+                    _events.postValue(CarListViewModelEvents.OnEmptyResults)
+                } else {
+                    _events.postValue(CarListViewModelEvents.OnItemsUpdated(it))
+                }
+
+            })
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -49,6 +50,8 @@ class CarListViewModel @Inject constructor(private val repository: @JvmSuppressW
     }
 
     sealed class CarListViewModelEvents {
+        object OnServerError : CarListViewModelEvents() // TODO From a couple PR errors will have structure
+        object OnEmptyResults : CarListViewModelEvents()
         class OnItemsUpdated(val items: List<CarRecyclerItem>) : CarListViewModelEvents()
     }
 

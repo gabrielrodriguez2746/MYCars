@@ -3,6 +3,7 @@ package com.mycars.data.deserializers
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.mycars.basetest.readJsonFile
 import com.mycars.data.helpers.getInvalidDefaultCar
 import com.mycars.data.models.cars.Car
 import com.mycars.data.models.cars.CarWrapper
@@ -74,15 +75,6 @@ class CarWrapperDeserializerTest {
             deserializer.deserialize(input, mockk(), mockk()).cars shouldBe listOf(expected)
         }
 
-    }
-
-    private fun readJsonFile(fileName: String): JsonObject {
-        val jsonFile = ClassLoader.getSystemClassLoader()
-            .getResource(fileName)
-            .file
-        val parser = JsonParser()
-        val jsonElement = parser.parse(FileReader(jsonFile))
-        return jsonElement.asJsonObject
     }
 
     companion object {

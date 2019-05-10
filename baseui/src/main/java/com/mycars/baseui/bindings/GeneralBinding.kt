@@ -10,4 +10,5 @@ fun RecyclerView.configure(configuration: RecyclerViewConfiguration) {
     adapter = configuration.adapter
     isNestedScrollingEnabled = configuration.isNestedScroll
     setHasFixedSize(configuration.hasFixedSize)
+    configuration.decorator?.let { addItemDecoration(it) }
 }
