@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="carlist.coordinates_format">Located at: %1$.2f, %2$.2f</string>
+    <string name="carlist.coordinates_format">\@%1$.2f, %2$.2f</string>
     <string name="carlist.heading">Heading: %1$.2f</string>
-    <string name="carlist.type">Type: %1$s</string>
 </resources>

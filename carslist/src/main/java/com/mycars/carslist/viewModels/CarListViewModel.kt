@@ -13,11 +13,15 @@ import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
+import com.mycars.carsui.models.MarkerMap
 import com.mycars.data.models.cars.Car
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class CarListViewModel @Inject constructor(
@@ -27,13 +31,17 @@ class CarListViewModel @Inject constructor(
 
     internal val initialDisposables = CompositeDisposable()
     private val _events = MutableLiveData<CarListViewModelEvents>()
+    private val locationsSubject = BehaviorSubject.create<List<MarkerMap>>()
 
+    val locations : Observable<List<MarkerMap>> get() = locationsSubject.hide()
     val events: LiveData<CarListViewModelEvents> get() = _events
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         initialDisposables += repository.getSingleListData(null)
-            .map { it.map { car -> CarRecyclerItem(mapper.getFromElement(car)) } }
+            .subscribeOn(Schedulers.computation())
+            .doOnSuccess { if (it.isNotEmpty()) locationsSubject.onNext(mapMarkerMap(it)) }
+            .map(::mapToListItem)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(onError = {
                 _events.postValue(OnRequestError(it.message))
@@ -50,6 +58,14 @@ class CarListViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         initialDisposables.clear()
+    }
+
+    internal fun mapMarkerMap(cars: List<Car>): List<MarkerMap> {
+        return cars.map { car -> with(car.coordinate) { MarkerMap(latitude, longitude, car.type)  } }
+    }
+
+    internal fun mapToListItem(cars: List<Car>): List<CarRecyclerItem> {
+        return cars.map { car -> CarRecyclerItem(mapper.getFromElement(car)) }
     }
 
     sealed class CarListViewModelEvents {

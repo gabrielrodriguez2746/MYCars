@@ -17,7 +17,7 @@ class CarWidgetMapper @Inject constructor(
             val (latitude, longitude) = coordinate.latitude to coordinate.longitude
             CarWidgetItem(
                 id, getImageFromType(type),
-                resourceProvider.getString(R.string.carlist_type, type),
+                type,
                 resourceProvider.getString(R.string.carlist_coordinates_format, latitude, longitude),
                 resourceProvider.getString(R.string.carlist_heading, heading)
             )

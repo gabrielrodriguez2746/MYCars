@@ -29,7 +29,7 @@ class CarWidgetMapperTest {
     fun `get from element`() {
         val expectedImageResource = 1
 
-        val outputType = "Type POOLING"
+        val outputType = "POOLING"
         val outputCoordinates = "coordinates"
         val outputHeading = "Heading"
 
@@ -37,7 +37,6 @@ class CarWidgetMapperTest {
         val output = CarWidgetItem(439670, expectedImageResource, outputType, outputCoordinates, outputHeading)
 
         every { mapper.getImageFromType(inputCar.type) } returns expectedImageResource
-        every { resourceProvider.getString(any(), inputCar.type) } returns outputType
 
         every {
             resourceProvider.getString(

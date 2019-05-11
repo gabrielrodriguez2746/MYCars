@@ -49,12 +49,16 @@ dependencies {
     implementation project(':base')
     implementation project(':baseui')
     implementation project(':data')
+    implementation project(':carsui')
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.archVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.ext.recyclerViewVersion"
     implementation "androidx.cardview:cardview:$rootProject.ext.cardViewVersion"
     implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
+
+    // Play Services
+    implementation "com.google.android.gms:play-services-maps:$rootProject.ext.playServicesVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"
