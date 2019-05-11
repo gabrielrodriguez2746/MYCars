@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
+        tools:layout_height="240dp"
+        tools:layout_width="160dp"
+        tools:parentTag="androidx.cardview.widget.CardView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="@dimen/carsui.8dp"
+                app:image="@{ image }"
+                app:layout_constraintBottom_toTopOf="@id/glReference"
+                app:layout_constraintDimensionRatio="1.1"
+                app:layout_constraintEnd_toEndOf="@id/glEnd"
+                app:layout_constraintStart_toStartOf="@id/glBegin"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_taxi" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCoordinates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/carsui.12dp"
+                android:layout_marginEnd="@dimen/carsui.12dp"
+                android:gravity="center"
+                android:text="@{ coordinates }"
+                app:layout_constraintBottom_toTopOf="@id/tvHeading"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvType"
+                tools:text="at 53.46,9.90" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ type }"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tvCoordinates"
+                app:layout_constraintEnd_toEndOf="@id/tvCoordinates"
+                app:layout_constraintStart_toStartOf="@id/tvCoordinates"
+                app:layout_constraintTop_toBottomOf="@id/glReference"
+                app:layout_constraintVertical_bias="0"
+                tools:text="Type: taxi" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ heading }"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tvType"
+                app:layout_constraintStart_toStartOf="@id/tvType"
+                app:layout_constraintTop_toBottomOf="@id/tvCoordinates"
+                tools:text="Heading: 245.00" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glBegin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glReference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.55" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <data>
+
+        <variable
+            name="type"
+            type="String" />
+
+        <variable
+            name="heading"
+            type="String" />
+
+        <variable
+            name="coordinates"
+            type="String" />
+
+        <variable
+            name="image"
+            type="Integer" />
+
+    </data>
+
+</layout>

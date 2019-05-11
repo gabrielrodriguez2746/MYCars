@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlin_version"
+
+    // Support Libraries
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXVersion"
+    implementation "androidx.cardview:cardview:$rootProject.ext.cardViewVersion"
+    implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
+
+    // Play Services
+    implementation "com.google.android.gms:play-services-maps:$rootProject.ext.playServicesVersion"
+
+    // Maps
+    implementation "com.google.maps.android:android-maps-utils:$rootProject.ext.mapUtilsVersion"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+
+}

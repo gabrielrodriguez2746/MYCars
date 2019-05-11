@@ -3,10 +3,12 @@ package com.mycars.carslist.viewModels
 import com.mycars.base.mappers.BaseMapper
 import com.mycars.base.repository.BaseRepository
 import com.mycars.basetest.InstantExecutorExtension
+import com.mycars.carslist.models.CarRecyclerItem
 import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
+import com.mycars.carsui.models.MarkerMap
 import com.mycars.data.models.cars.Car
 import io.kotlintest.matchers.types.shouldBeInstanceOf
 import io.mockk.every
@@ -15,6 +17,7 @@ import io.mockk.spyk
 import io.mockk.verify
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -35,12 +38,14 @@ class CarListViewModelTest {
 
     @BeforeAll
     fun beforeAll() {
+        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
         RxAndroidPlugins.setMainThreadSchedulerHandler { Schedulers.trampoline() }
     }
 
     @AfterAll
     fun afterAll() {
+        RxJavaPlugins.reset()
         RxAndroidPlugins.reset()
     }
 
@@ -62,16 +67,22 @@ class CarListViewModelTest {
 
                 viewModel.onCreate()
                 viewModel.events.value.shouldBeInstanceOf<OnEmptyResults>()
+                viewModel.locations.test().assertEmpty()
             }
 
             @Test
             fun items() {
 
-                every { mapper.getFromElement(any()) } returns mockk()
+                val locationExpected = listOf<MarkerMap>(mockk())
+                val itemsExpected = listOf<CarRecyclerItem>(mockk())
+
+                every { viewModel.mapMarkerMap(any()) } returns locationExpected
+                every { viewModel.mapToListItem(any()) } returns itemsExpected
                 every { repository.getSingleListData(any()) } returns Single.just(listOf(mockk()))
 
                 viewModel.onCreate()
                 viewModel.events.value.shouldBeInstanceOf<OnItemsUpdated>()
+                viewModel.locations.test().assertNoErrors().assertValue(locationExpected)
             }
         }
 
