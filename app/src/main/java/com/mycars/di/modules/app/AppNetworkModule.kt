@@ -3,6 +3,7 @@ package com.mycars.di.modules.app
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mycars.base.di.modules.BaseInterceptorModule
+import com.mycars.base.di.modules.CallAdapterFactoryModule
 import com.mycars.data.deserializers.CarWrapperDeserializer
 import com.mycars.data.models.cars.CarWrapper
 import com.mycars.network.di.modules.CarsClientModule
@@ -13,6 +14,7 @@ import dagger.Reusable
 @Module(
     includes = [
         BaseInterceptorModule::class,
+        CallAdapterFactoryModule::class,
         CarsClientModule::class
     ]
 )

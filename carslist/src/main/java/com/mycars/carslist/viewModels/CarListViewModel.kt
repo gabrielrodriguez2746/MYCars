@@ -10,6 +10,9 @@ import com.mycars.base.mappers.BaseMapper
 import com.mycars.base.repository.BaseRepository
 import com.mycars.carslist.models.CarRecyclerItem
 import com.mycars.carslist.models.CarWidgetItem
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
 import com.mycars.data.models.cars.Car
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,13 +35,13 @@ class CarListViewModel @Inject constructor(
         initialDisposables += repository.getSingleListData(null)
             .map { it.map { car -> CarRecyclerItem(mapper.getFromElement(car)) } }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy  (onError = {
-                _events.postValue(CarListViewModelEvents.OnServerError)
+            .subscribeBy(onError = {
+                _events.postValue(OnRequestError(it.message))
             }, onSuccess = {
                 if (it.isEmpty()) {
-                    _events.postValue(CarListViewModelEvents.OnEmptyResults)
+                    _events.postValue(OnEmptyResults)
                 } else {
-                    _events.postValue(CarListViewModelEvents.OnItemsUpdated(it))
+                    _events.postValue(OnItemsUpdated(it))
                 }
 
             })
@@ -50,8 +53,8 @@ class CarListViewModel @Inject constructor(
     }
 
     sealed class CarListViewModelEvents {
-        object OnServerError : CarListViewModelEvents() // TODO From a couple PR errors will have structure
         object OnEmptyResults : CarListViewModelEvents()
+        class OnRequestError(val errorMessage: String?) : CarListViewModelEvents()
         class OnItemsUpdated(val items: List<CarRecyclerItem>) : CarListViewModelEvents()
     }
 

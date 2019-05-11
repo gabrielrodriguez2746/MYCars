@@ -24,7 +24,9 @@ import com.mycars.carslist.models.CarRecyclerItem
 import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.carslist.viewModels.CarListViewModel
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
+import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
 import com.mycars.carslist.widget.CarHorizontalItem
 import com.mycars.carslist.widget.CarVerticalItem
 import dagger.android.support.AndroidSupportInjection
@@ -45,6 +47,8 @@ class CarListFragment : Fragment() {
     }
     private val itemVerticalHeight by lazy { (displayMetrics.heightPixels * 0.33).toInt() }
     private val itemHorizontalHeight by lazy { (displayMetrics.heightPixels * 0.25).toInt() }
+
+    private var toast: Toast? = null
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -75,8 +79,23 @@ class CarListFragment : Fragment() {
     private fun processEvents(event: CarListViewModelEvents) {
         when (event) {
             is OnItemsUpdated -> itemsAdapter.submitList(event.items)
+            is OnEmptyResults -> showEmptyData()
+            is OnRequestError -> processError(event.errorMessage.orEmpty())
         }
     }
+
+    // TODO Find a better way to show errors
+    private fun processError(message: String) {
+        toast?.cancel()
+        toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toast?.show()
+        if (itemsAdapter.itemCount == 0) {
+            showEmptyData()
+        }
+    }
+
+    // TODO Show data 0 view
+    private fun showEmptyData() = Unit
 
     // TODO All this manage it with delegates
     inner class CarListAdapter : BaseListAdapter<CarRecyclerItem>() {
