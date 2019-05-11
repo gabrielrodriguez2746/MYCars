@@ -1,9 +1,9 @@
 @file:JvmName("CarExtensions")
 
-package com.mycars.data.helpers
+package com.mycars.carsdata.helpers
 
-import com.mycars.data.models.cars.Car
-import com.mycars.data.models.cars.Coordinate
+import com.mycars.carsdata.models.cars.Car
+import com.mycars.carsdata.models.cars.Coordinate
 
 fun getInvalidDefaultCar(): Car {
     return Car(id = -1, type = "", heading = 0.0, coordinate = Coordinate(0.0, 0.0))

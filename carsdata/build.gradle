@@ -49,8 +49,12 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.ext.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
 
+    // Rx
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
 
     // Test
     testImplementation project(':basetest')
@@ -60,5 +64,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:$rootProject.ext.junit5Version"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.ext.junit5Version"
+
 
 }

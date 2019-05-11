@@ -38,7 +38,7 @@ dependencies {
 
     implementation project(':base')
     implementation project(':baseui')
-    implementation project(':data')
+    implementation project(':carsdata')
     implementation project(':launcher')
     implementation project(':carsnetwork')
     implementation project(':carslist')
@@ -48,6 +48,12 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "android.arch.navigation:navigation-fragment:$rootProject.ext.navigationVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.ext.navigationVersion"
+
+    // Room
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+
 
     // Network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"

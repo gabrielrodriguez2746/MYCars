@@ -1,4 +1,4 @@
-package com.mycars.data.deserializers
+package com.mycars.carsdata.deserializers
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonDeserializationContext
@@ -7,11 +7,11 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.internal.LazilyParsedNumber
 import com.mycars.base.helpers.getGenericOrDefault
-import com.mycars.data.helpers.getInvalidDefaultCar
-import com.mycars.data.helpers.isCarValid
-import com.mycars.data.models.cars.Car
-import com.mycars.data.models.cars.CarWrapper
-import com.mycars.data.models.cars.Coordinate
+import com.mycars.carsdata.helpers.getInvalidDefaultCar
+import com.mycars.carsdata.helpers.isCarValid
+import com.mycars.carsdata.models.cars.Car
+import com.mycars.carsdata.models.cars.CarWrapper
+import com.mycars.carsdata.models.cars.Coordinate
 import java.lang.reflect.Type
 import javax.inject.Inject
 

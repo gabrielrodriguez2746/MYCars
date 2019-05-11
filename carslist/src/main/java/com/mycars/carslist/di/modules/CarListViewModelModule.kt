@@ -6,7 +6,7 @@ import com.mycars.base.mappers.BaseMapper
 import com.mycars.carslist.mappers.CarWidgetMapper
 import com.mycars.carslist.models.CarWidgetItem
 import com.mycars.carslist.viewModels.CarListViewModel
-import com.mycars.data.models.cars.Car
+import com.mycars.carsdata.models.cars.Car
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable

@@ -14,7 +14,7 @@ import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.On
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
 import com.mycars.carsui.models.MarkerMap
-import com.mycars.data.models.cars.Car
+import com.mycars.carsdata.models.cars.Car
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
