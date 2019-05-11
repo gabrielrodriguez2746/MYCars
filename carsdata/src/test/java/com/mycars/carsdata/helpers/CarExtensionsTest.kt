@@ -1,4 +1,4 @@
-package com.mycars.data.helpers
+package com.mycars.carsdata.helpers
 
 import io.kotlintest.data.forall
 import io.kotlintest.shouldBe

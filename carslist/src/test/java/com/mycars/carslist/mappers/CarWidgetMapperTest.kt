@@ -3,8 +3,8 @@ package com.mycars.carslist.mappers
 import com.mycars.base.providers.ResourceProvider
 import com.mycars.carslist.R
 import com.mycars.carslist.models.CarWidgetItem
-import com.mycars.data.models.cars.Car
-import com.mycars.data.models.cars.Coordinate
+import com.mycars.carsdata.models.cars.Car
+import com.mycars.carsdata.models.cars.Coordinate
 import io.kotlintest.data.forall
 import io.kotlintest.shouldBe
 import io.kotlintest.tables.row

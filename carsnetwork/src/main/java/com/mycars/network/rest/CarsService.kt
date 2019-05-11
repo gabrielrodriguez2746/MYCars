@@ -1,6 +1,6 @@
 package com.mycars.network.rest
 
-import com.mycars.data.models.cars.CarWrapper
+import com.mycars.carsdata.models.cars.CarWrapper
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -5,7 +5,7 @@ import com.mycars.base.mappers.BaseMapper
 import com.mycars.base.providers.ResourceProvider
 import com.mycars.carslist.R
 import com.mycars.carslist.models.CarWidgetItem
-import com.mycars.data.models.cars.Car
+import com.mycars.carsdata.models.cars.Car
 import javax.inject.Inject
 
 class CarWidgetMapper @Inject constructor(

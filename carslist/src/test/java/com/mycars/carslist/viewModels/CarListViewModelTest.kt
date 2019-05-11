@@ -9,7 +9,7 @@ import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.On
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
 import com.mycars.carslist.viewModels.CarListViewModel.CarListViewModelEvents.OnRequestError
 import com.mycars.carsui.models.MarkerMap
-import com.mycars.data.models.cars.Car
+import com.mycars.carsdata.models.cars.Car
 import io.kotlintest.matchers.types.shouldBeInstanceOf
 import io.mockk.every
 import io.mockk.mockk

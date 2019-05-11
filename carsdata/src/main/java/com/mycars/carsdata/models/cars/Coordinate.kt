@@ -1,4 +1,4 @@
-package com.mycars.data.models.cars
+package com.mycars.carsdata.models.cars
 
 data class Coordinate(
     val latitude: Double,

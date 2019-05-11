@@ -1,13 +1,12 @@
-package com.mycars.data.deserializers
+package com.mycars.carsdata.deserializers
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.mycars.basetest.readJsonFile
-import com.mycars.data.helpers.getInvalidDefaultCar
-import com.mycars.data.models.cars.Car
-import com.mycars.data.models.cars.CarWrapper
-import com.mycars.data.models.cars.Coordinate
+import com.mycars.carsdata.helpers.getInvalidDefaultCar
+import com.mycars.carsdata.models.cars.Car
+import com.mycars.carsdata.models.cars.CarWrapper
+import com.mycars.carsdata.models.cars.Coordinate
 import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
@@ -15,7 +14,6 @@ import io.mockk.spyk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.io.FileReader
 
 class CarWrapperDeserializerTest {
 

@@ -4,8 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mycars.base.di.modules.BaseInterceptorModule
 import com.mycars.base.di.modules.CallAdapterFactoryModule
-import com.mycars.data.deserializers.CarWrapperDeserializer
-import com.mycars.data.models.cars.CarWrapper
+import com.mycars.carsdata.deserializers.CarWrapperDeserializer
+import com.mycars.carsdata.models.cars.CarWrapper
 import com.mycars.network.di.modules.CarsClientModule
 import dagger.Module
 import dagger.Provides
