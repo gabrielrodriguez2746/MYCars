@@ -1,4 +1,4 @@
-package com.mycars.baseui.navigation
+package com.mycars.baseui.helpers
 
 /*
  * Copyright 2019, The Android Open Source Project

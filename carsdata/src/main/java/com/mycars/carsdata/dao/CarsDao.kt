@@ -16,7 +16,7 @@ abstract class CarsDao {
     abstract fun insert(orders: List<Car>)
 
     @Query("SELECT * FROM car WHERE car_id = :carId")
-    abstract fun getCarById(carId: Int): Single<Car>
+    abstract fun getCarById(carId: Int): Maybe<Car>
 
     @Query("SELECT * FROM car")
     abstract fun getCarsPersistenceList(): Maybe<List<Car>>

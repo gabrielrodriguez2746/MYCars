@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':carsdetail'
 include ':base'
 include ':basetest'
 include ':launcher'

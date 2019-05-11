@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Add api key in order to make the works-->
-    <string name="maps_api_key">xxx</string>
+    <string name="maps_api_key">AIzaSyD4AWIhOsWxPBEUoqPBL4WDqyE1UiBjgoM</string>
 </resources>
