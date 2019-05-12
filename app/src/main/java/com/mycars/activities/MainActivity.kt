@@ -78,6 +78,5 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragment
         toast?.show()
     }
 
-
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 }
