@@ -7,51 +7,54 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.mycars.base.repository.BaseRepository
-import com.mycars.carsui.models.MarkerMap
 import com.mycars.carsdata.models.cars.Car
-import io.reactivex.Observable
+import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnMapItems
+import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnNotFoundCar
+import com.mycars.carsui.models.MarkerMap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CarDetailViewModel @Inject constructor(
     private val repository: @JvmSuppressWildcards BaseRepository<Any, Int, Car>
 ) : ViewModel(), LifecycleObserver {
 
-    private lateinit var disposable : Disposable
+    private lateinit var disposable: Disposable
     private val isDisposableInitialized: Boolean get() = ::disposable.isInitialized
+    private val isDisposableDispose: Boolean get() = disposable.isDisposed
 
     private val _events = MutableLiveData<CarDetailViewModelEvents>()
-    private val locationsSubject = BehaviorSubject.create<List<MarkerMap>>()
 
-    val locations : Observable<List<MarkerMap>> get() = locationsSubject.hide()
     val events: LiveData<CarDetailViewModelEvents> get() = _events
 
     fun locateCarById(id: Int) {
         disposable = repository.getSingleDataByIdentifier(id)
+            .subscribeOn(Schedulers.computation())
+            .map { with(it.coordinate) { MarkerMap(latitude, longitude, it.type) } }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(onError = {
-                _events.postValue(CarDetailViewModelEvents.OnNotFoundCar)
+                _events.postValue(OnNotFoundCar)
             }, onSuccess = {
-                locationsSubject.onNext(mapMarkerMap(listOf(it)))
+                _events.postValue(OnMapItems(listOf(it)))
             })
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        if (isDisposableInitialized && !disposable.isDisposed) {
-            disposable.dispose()
+        if (isDisposableInitialized && !isDisposableDispose) {
+            dispose()
         }
     }
 
-    internal fun mapMarkerMap(cars: List<Car>): List<MarkerMap> {
-        return cars.map { car -> with(car.coordinate) { MarkerMap(latitude, longitude, car.type)  } }
+    internal fun dispose() {
+        disposable.dispose()
     }
 
     sealed class CarDetailViewModelEvents {
         object OnNotFoundCar : CarDetailViewModelEvents()
+        class OnMapItems(val items: List<MarkerMap>) : CarDetailViewModelEvents()
     }
 
 }

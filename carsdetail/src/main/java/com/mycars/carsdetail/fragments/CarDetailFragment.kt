@@ -16,6 +16,7 @@ import com.mycars.carsdetail.databinding.FragmentCarDetailBinding
 import com.mycars.carsdetail.viewModels.CarDetailViewModel
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnNotFoundCar
+import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnMapItems
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -48,7 +49,6 @@ class CarDetailFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarDetailViewModel::class.java)
         viewModel.events.observe(viewLifecycleOwner, Observer(::processEvents))
         viewModel.locateCarById(carId)
-        binding.mvCars.init(viewModel.locations)
 
         activity?.lifecycle?.apply {
             addObserver(viewModel)
@@ -60,6 +60,7 @@ class CarDetailFragment : Fragment() {
     private fun processEvents(event: CarDetailViewModelEvents) {
         when (event) {
             is OnNotFoundCar -> notifyCloseError()
+            is OnMapItems -> binding.mvCars.init(event.items)
         }
     }
 

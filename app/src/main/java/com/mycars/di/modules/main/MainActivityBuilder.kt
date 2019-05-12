@@ -13,6 +13,7 @@ abstract class MainActivityBuilder {
         modules = [
             CarListFragmentBuilder::class,
             CarDetailFragmentBuilder::class,
+            CarMapsFragmentBuilder::class,
             CarsRepositoryModule::class
         ]
     )

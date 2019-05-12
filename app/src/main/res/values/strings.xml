@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">MYCars</string>
+    <string name="app.name">MYCars</string>
+    <string name="app.menu_home">Home</string>
+    <string name="app.menu_map">Maps</string>
 </resources>

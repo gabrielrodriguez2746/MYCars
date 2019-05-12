@@ -21,8 +21,11 @@ import com.mycars.carsui.widgets.MarkersMapView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KProperty
@@ -37,11 +40,7 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
         mapView.resources.getDimensionPixelSize(R.dimen.carsui_marker_size)
     }
 
-    private lateinit var data: Observable<List<MarkerMap>>
-    private val isDataSourceInitialized: Boolean get() = ::data.isInitialized
-
-    private lateinit var map: GoogleMap
-    private val isMapInitialized: Boolean get() = ::map.isInitialized
+    private val data = BehaviorSubject.create<List<MarkerMap>>()
 
     private lateinit var markerManager: MarkerManager
     private val markerCollection: MarkerManager.Collection by lazy { markerManager.newCollection() }
@@ -49,17 +48,19 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     private val compositeDisposable = CompositeDisposable()
     private val cameraUpdateSubject = PublishSubject.create<List<LatLng>>()
 
+    private val onMapReadySubject = BehaviorSubject.create<GoogleMap>()
+
     override fun bind(view: MapView) {
         mapView = view
         view.getMapAsync {
-            map = it
+            onMapReadySubject.onNext(it)
             markerManager = MarkerManager(it)
             onResume()
         }
     }
 
-    override fun init(data: Observable<List<MarkerMap>>) {
-        this.data = data
+    override fun init(data: List<MarkerMap>) {
+        this.data.onNext(data)
     }
 
     override fun getValue(thisRef: MarkersMapView, property: KProperty<*>): MarkersMapViewDelegate {
@@ -69,11 +70,8 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
         mapView.onResume()
-        if (isDataSourceInitialized) {
-            disposeSubscription()
-            subscribeToCameraUpdates()
-            subscribeToLocationChanges()
-        }
+        subscribeToCameraUpdates()
+        subscribeToLocationChanges()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -98,8 +96,11 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     }
 
     private fun subscribeToLocationChanges() {
-        compositeDisposable += data
-            .distinctUntilChanged()
+        compositeDisposable += Observable.combineLatest(data.distinctUntilChanged(),
+            onMapReadySubject,
+            BiFunction<List<MarkerMap>, GoogleMap, List<MarkerMap>> { locations, _ ->
+                locations
+            })
             .doOnNext { requestCameraUpdate(mapToLocation(it)) }
             .flatMap { Observable.fromIterable(it) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -107,41 +108,46 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     }
 
     private fun subscribeToCameraUpdates() {
-        compositeDisposable += cameraUpdateSubject
-            .debounce(500L, TimeUnit.MILLISECONDS)
+        compositeDisposable += Observable.combineLatest(cameraUpdateSubject.debounce(500L, TimeUnit.MILLISECONDS),
+            onMapReadySubject,
+            BiFunction<List<LatLng>, GoogleMap, Pair<List<LatLng>, GoogleMap>> { locations, map ->
+                locations to map
+            })
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(onNext = ::updateCamera)
+            .subscribeBy(onNext = {
+                val (locations, map) = it
+                map.updateCamera(locations)
+            })
     }
 
-    private fun updateCamera(locations: List<LatLng>) {
+    private fun GoogleMap.updateCamera(locations: List<LatLng>) {
         getLatLngBounds(locations)?.let { bounds ->
             val cameraUpdate = if (locations.size > 1) {
                 CameraUpdateFactory.newLatLngBounds(bounds, defaultCameraPadding)
             } else {
                 CameraUpdateFactory.newLatLngZoom(bounds.center, MAX_ZOOM_PREFERENCE)
             }
-            map.animateCamera(cameraUpdate, 500, null)
+            animateCamera(cameraUpdate, 500, null)
 
         }
     }
 
     private fun addMarkers(markerMap: MarkerMap) {
-        if (isMapInitialized) {
-            val iconFactory = IconGenerator(mapView.context).apply {
-                setBackground(null)
-                setContentView(ImageView(mapView.context).apply {
-                    layoutParams = ViewGroup.MarginLayoutParams(markerSize, markerSize)
-                    setImage(getImageFromType(markerMap.type))
-                })
-            }
-
-            markerCollection.addMarker(
-                MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()))
-                    .position(with(markerMap) { LatLng(latitude, longitude) })
-                    .anchor(0.5f, 0.5f)
-            )
+        val iconFactory = IconGenerator(mapView.context).apply {
+            setBackground(null)
+            setContentView(ImageView(mapView.context).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(markerSize, markerSize)
+                setImage(getImageFromType(markerMap.type))
+            })
         }
+
+        markerCollection.addMarker(
+            MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()))
+                .position(with(markerMap) { LatLng(latitude, longitude) })
+                .anchor(0.5f, 0.5f)
+        )
     }
 
     private fun requestCameraUpdate(locations: List<LatLng>) {
