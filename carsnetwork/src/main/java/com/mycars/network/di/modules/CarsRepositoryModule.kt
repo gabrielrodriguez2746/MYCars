@@ -1,5 +1,6 @@
 package com.mycars.network.di.modules
 
+import com.mycars.base.di.ActivityScope
 import com.mycars.base.repository.BaseRepository
 import com.mycars.carsdata.dao.CarsDao
 import com.mycars.carsdata.database.CarsDatabase
@@ -13,12 +14,14 @@ import dagger.Provides
 abstract class CarsRepositoryModule {
 
     @Binds
-    abstract fun bindRepository(repository: CarRepository): BaseRepository<Any, Car>
+    @ActivityScope
+    abstract fun bindRepository(repository: CarRepository): BaseRepository<Any, Int, Car>
 
     @Module
     companion object {
 
         @Provides
+        @ActivityScope
         @JvmStatic
         fun provideCarDao(database: CarsDatabase): CarsDao {
             return database.carDatabase()

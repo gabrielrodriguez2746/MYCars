@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class CarListViewModel @Inject constructor(
     private val mapper: @JvmSuppressWildcards BaseMapper<Car, CarWidgetItem>,
-    private val repository: @JvmSuppressWildcards BaseRepository<Any, Car>
+    private val repository: @JvmSuppressWildcards BaseRepository<Any, Int, Car>
 ) : ViewModel(), LifecycleObserver {
 
     internal val initialDisposables = CompositeDisposable()

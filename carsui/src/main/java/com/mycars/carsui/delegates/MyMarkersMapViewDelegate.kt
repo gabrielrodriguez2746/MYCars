@@ -23,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KProperty
@@ -31,10 +30,10 @@ import kotlin.reflect.KProperty
 class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
 
     private lateinit var mapView: MapView
-    private val defaultCameraPadding : Int by lazy {
+    private val defaultCameraPadding: Int by lazy {
         mapView.resources.getDimensionPixelSize(R.dimen.carsui_16dp)
     }
-    private val markerSize : Int by lazy {
+    private val markerSize: Int by lazy {
         mapView.resources.getDimensionPixelSize(R.dimen.carsui_marker_size)
     }
 
@@ -72,8 +71,8 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
         mapView.onResume()
         if (isDataSourceInitialized) {
             disposeSubscription()
-            subscribeToLocationChanges()
             subscribeToCameraUpdates()
+            subscribeToLocationChanges()
         }
     }
 
@@ -116,8 +115,11 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
 
     private fun updateCamera(locations: List<LatLng>) {
         getLatLngBounds(locations)?.let { bounds ->
-
-            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, defaultCameraPadding)
+            val cameraUpdate = if (locations.size > 1) {
+                CameraUpdateFactory.newLatLngBounds(bounds, defaultCameraPadding)
+            } else {
+                CameraUpdateFactory.newLatLngZoom(bounds.center, MAX_ZOOM_PREFERENCE)
+            }
             map.animateCamera(cameraUpdate, 500, null)
 
         }
@@ -136,7 +138,7 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
             markerCollection.addMarker(
                 MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()))
-                    .position(with(markerMap) { LatLng(latitude, longitude) } )
+                    .position(with(markerMap) { LatLng(latitude, longitude) })
                     .anchor(0.5f, 0.5f)
             )
         }
@@ -175,6 +177,10 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
 
     private fun disposeSubscription() {
         compositeDisposable.clear()
+    }
+
+    companion object {
+        private const val MAX_ZOOM_PREFERENCE = 15.5f
     }
 
 }

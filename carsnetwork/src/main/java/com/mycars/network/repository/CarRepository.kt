@@ -11,13 +11,24 @@ import javax.inject.Inject
 class CarRepository @Inject constructor(
     private val service: CarsService,
     private val dao: CarsDao
-) : BaseRepository<Any, Car>() {
+) : BaseRepository<Any, Int, Car>() {
 
     override fun getSingleListData(parameters: Any?): Single<List<Car>> {
         return dao.getCarsPersistenceList()
+            .subscribeOn(Schedulers.io())
             .toSingle()
             .flatMap(::validateEmptyPersistence)
             .onErrorResumeNext { getDataFromServer() }
+    }
+
+    override fun getSingleDataByIdentifier(identifier: Int): Single<Car> {
+        return dao.getCarById(identifier)
+            .subscribeOn(Schedulers.io())
+            .toSingle()
+            .onErrorResumeNext {
+                getDataFromServer()
+                    .map { it.first { car -> car.id == identifier } }
+            }
     }
 
     internal fun validateEmptyPersistence(cars: List<Car>): Single<List<Car>> {

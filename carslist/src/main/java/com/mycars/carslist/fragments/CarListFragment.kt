@@ -14,10 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mycars.base.listeners.OnFragmentInteraction
 import com.mycars.baseui.decorators.MediaSpaceDecoration
 import com.mycars.baseui.generics.BaseListAdapter
 import com.mycars.baseui.generics.ViewHolder
-import com.mycars.baseui.generics.addRippleForeground
+import com.mycars.baseui.helpers.addRippleForeground
 import com.mycars.baseui.models.RecyclerViewConfiguration
 import com.mycars.carslist.R
 import com.mycars.carslist.databinding.FragmentCarListBinding
@@ -50,7 +51,7 @@ class CarListFragment : Fragment() {
     private val itemVerticalHeight by lazy { (displayMetrics.heightPixels * 0.33).toInt() }
     private val itemHorizontalHeight by lazy { (displayMetrics.heightPixels * 0.18).toInt() }
 
-    private var toast: Toast? = null
+    private val getActivityListener : OnFragmentInteraction? get() = activity as? OnFragmentInteraction
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -97,11 +98,8 @@ class CarListFragment : Fragment() {
         }
     }
 
-    // TODO Find a better way to show errors
     private fun processError(message: String) {
-        toast?.cancel()
-        toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
-        toast?.show()
+        getActivityListener?.onMessageToShow(message)
         if (itemsAdapter.itemCount == 0) {
             showEmptyData()
         }
@@ -152,7 +150,7 @@ class CarListFragment : Fragment() {
                 coordinates = item.coordinates
                 type = item.type
                 heading = item.heading
-                root.setOnClickListener { Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show() }
+                root.setOnClickListener { getActivityListener?.onItemClicked(CAR_LIST, item.id.toString()) }
             }
         }
     }
@@ -166,8 +164,12 @@ class CarListFragment : Fragment() {
                 coordinates = item.coordinates
                 type = item.type
                 heading = item.heading
-                root.setOnClickListener { Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show() }
+                root.setOnClickListener { getActivityListener?.onItemClicked(CAR_LIST, item.id.toString()) }
             }
         }
+    }
+
+    companion object {
+        const val CAR_LIST = "CAR_LIST"
     }
 }

@@ -32,7 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class CarListViewModelTest {
 
     private val mapper: BaseMapper<Car, CarWidgetItem> = mockk()
-    private val repository: BaseRepository<Any, Car> = mockk()
+    private val repository: BaseRepository<Any, Int, Car> = mockk()
 
     lateinit var viewModel: CarListViewModel
 

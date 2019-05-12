@@ -1,4 +1,4 @@
-package com.mycars.baseui.generics
+package com.mycars.baseui.helpers
 
 import android.os.Build
 import android.util.TypedValue
