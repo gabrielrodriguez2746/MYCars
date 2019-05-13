@@ -9,10 +9,10 @@ ext {
     ktlintVersion = '0.29.0'
 
     // Internal
-    mycarsBaseVersion = '1.0.0@aar'
+    mycarsBaseVersion = '1.1.0@aar'
     mycarsBaseTestVersion = '1.0.0@aar'
     mycarsBaseUIVersion = '1.0.0@aar'
-    mycarsDataVersion = '1.0.0@aar'
+    mycarsDataVersion = '1.1.0@aar'
     mycarsCarsUIVersion = '1.0.0@aar'
 
     // Kotlin

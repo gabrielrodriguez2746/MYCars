@@ -20,4 +20,7 @@ abstract class CarsDao {
 
     @Query("SELECT * FROM car")
     abstract fun getCarsPersistenceList(): Maybe<List<Car>>
+
+    @Query("DELETE FROM car")
+    abstract fun deleteCarsPersitence()
 }

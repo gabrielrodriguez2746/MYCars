@@ -7,6 +7,7 @@ import com.mycars.base.di.modules.FactoryModule
 import com.mycars.di.modules.app.AppActivityBuilder
 import com.mycars.di.modules.app.AppConfigurationModule
 import com.mycars.di.modules.app.AppDataBaseModule
+import com.mycars.di.modules.app.AppInitializerModule
 import com.mycars.di.modules.app.AppNetworkModule
 import dagger.BindsInstance
 import dagger.Component
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @Component(modules = [
     AndroidSupportInjectionModule::class,
     FactoryModule::class,
+    AppInitializerModule::class,
     AppDataBaseModule::class,
     AppConfigurationModule::class,
     AppActivityBuilder::class,
