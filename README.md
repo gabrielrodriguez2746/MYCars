@@ -12,6 +12,7 @@ MYCars is a simple app to practice with MapView google maps component
 - Improve animations.
 - More unit test support.
 - Better support for module versioning (create changelog).
+- Filter by and group by on home screen.
 
 * * *
 
