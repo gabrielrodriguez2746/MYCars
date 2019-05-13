@@ -45,7 +45,6 @@ class CarMapsViewModel @Inject constructor(
                 } else {
                     _events.postValue(OnMapItems(it))
                 }
-
             })
     }
 

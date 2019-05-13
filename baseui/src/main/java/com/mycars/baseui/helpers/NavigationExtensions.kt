@@ -122,7 +122,8 @@ fun BottomNavigationView.setupWithNavController(
                 }
                 selectedItemTag = newlySelectedItemTag
                 isOnFirstFragment = selectedItemTag == firstFragmentTag
-                selectedNavController.value = selectedFragment.navController
+                val navController = selectedFragment.navController
+                selectedNavController.value = navController
                 true
             } else {
                 false
@@ -160,10 +161,12 @@ private fun BottomNavigationView.setupItemReselected(
                 as NavHostFragment
         val navController = selectedFragment.navController
         // Pop the back stack to the start destination of the current navController graph
-        navController.popBackStack(
-            navController.graph.startDestination, false
-        )
+        navController.popStartDestination()
     }
+}
+
+private fun NavController.popStartDestination() {
+    popBackStack(graph.startDestination, false)
 }
 
 private fun detachNavHostFragment(

@@ -9,6 +9,6 @@
     <fragment
         android:id="@+id/destination_map"
         android:name="com.mycars.carshome.fragments.CarMapFragment"
-        android:label="CarMapFragment"
+        android:label="@string/app.carmap_label"
         tools:layout="@layout/fragment_car_map" />
 </navigation>

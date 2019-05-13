@@ -6,8 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
+import com.mycars.base.providers.ResourceProvider
 import com.mycars.base.repository.BaseRepository
 import com.mycars.carsdata.models.cars.Car
+import com.mycars.carsdata.models.cars.Coordinate
+import com.mycars.carsdetail.R
+import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnAdjustTitle
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnMapItems
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnNotFoundCar
 import com.mycars.carsui.models.MarkerMap
@@ -18,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CarDetailViewModel @Inject constructor(
+    private val resourceProvider: ResourceProvider,
     private val repository: @JvmSuppressWildcards BaseRepository<Any, Int, Car>
 ) : ViewModel(), LifecycleObserver {
 
@@ -31,6 +36,10 @@ class CarDetailViewModel @Inject constructor(
 
     fun locateCarById(id: Int) {
         disposable = repository.getSingleDataByIdentifier(id)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                with(it.coordinate) { _events.postValue(OnAdjustTitle(getFormattedCoordinates())) }
+            }
             .subscribeOn(Schedulers.computation())
             .map { with(it.coordinate) { MarkerMap(latitude, longitude, it.type) } }
             .observeOn(AndroidSchedulers.mainThread())
@@ -48,6 +57,14 @@ class CarDetailViewModel @Inject constructor(
         }
     }
 
+    internal fun Coordinate.getFormattedCoordinates(): String {
+        return resourceProvider.getString(
+            R.string.carsdetail_coordinates,
+            latitude,
+            longitude
+        )
+    }
+
     internal fun dispose() {
         disposable.dispose()
     }
@@ -55,6 +72,7 @@ class CarDetailViewModel @Inject constructor(
     sealed class CarDetailViewModelEvents {
         object OnNotFoundCar : CarDetailViewModelEvents()
         class OnMapItems(val items: List<MarkerMap>) : CarDetailViewModelEvents()
+        class OnAdjustTitle(val title: String) : CarDetailViewModelEvents()
     }
 
 }
