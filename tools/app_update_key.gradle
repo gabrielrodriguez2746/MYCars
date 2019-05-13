@@ -1,6 +1,6 @@
 task updateApiKey {
     doFirst {
-        ant.replaceregexp (file: "$project.rootDir/carsui/src/main/res/values/api_keys.xml",
+        ant.replaceregexp (file: "$project.rootDir/app/src/main/res/values/api_keys.xml",
                 match: "$match", flags: 'g',
                 replace: "$key")
     }
