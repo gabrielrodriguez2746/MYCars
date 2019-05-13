@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,6 +17,7 @@ import com.mycars.carsdetail.R
 import com.mycars.carsdetail.databinding.FragmentCarDetailBinding
 import com.mycars.carsdetail.viewModels.CarDetailViewModel
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents
+import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnAdjustTitle
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnNotFoundCar
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnMapItems
 import dagger.android.support.AndroidSupportInjection
@@ -29,6 +32,7 @@ class CarDetailFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val getActivityListener : OnFragmentInteraction? get() = activity as? OnFragmentInteraction
+    private val supportActionBar : ActionBar? get() = (activity as AppCompatActivity).supportActionBar
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -61,6 +65,7 @@ class CarDetailFragment : Fragment() {
         when (event) {
             is OnNotFoundCar -> notifyCloseError()
             is OnMapItems -> binding.mvCars.init(event.items)
+            is OnAdjustTitle -> supportActionBar?.title = event.title
         }
     }
 

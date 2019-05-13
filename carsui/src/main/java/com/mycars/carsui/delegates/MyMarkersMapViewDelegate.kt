@@ -2,12 +2,12 @@ package com.mycars.carsui.delegates
 
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -47,6 +47,28 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
 
     private val compositeDisposable = CompositeDisposable()
     private val cameraUpdateSubject = PublishSubject.create<List<LatLng>>()
+
+    private val carImage by lazy {
+        val iconFactory = IconGenerator(mapView.context).apply {
+            setBackground(null)
+            setContentView(ImageView(mapView.context).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(markerSize, markerSize)
+                setImage(R.drawable.ic_car)
+            })
+        }
+        BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon())
+    }
+
+    private val taxiImage by lazy {
+        val iconFactory = IconGenerator(mapView.context).apply {
+            setBackground(null)
+            setContentView(ImageView(mapView.context).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(markerSize, markerSize)
+                setImage(R.drawable.ic_taxi)
+            })
+        }
+        BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon())
+    }
 
     private val onMapReadySubject = BehaviorSubject.create<GoogleMap>()
 
@@ -96,11 +118,14 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     }
 
     private fun subscribeToLocationChanges() {
-        compositeDisposable += Observable.combineLatest(data.distinctUntilChanged(),
-            onMapReadySubject,
+        compositeDisposable += Observable.combineLatest(data
+            .subscribeOn(Schedulers.computation())
+            .distinctUntilChanged(),
+            onMapReadySubject.subscribeOn(Schedulers.computation()),
             BiFunction<List<MarkerMap>, GoogleMap, List<MarkerMap>> { locations, _ ->
                 locations
             })
+            .subscribeOn(Schedulers.computation())
             .doOnNext { requestCameraUpdate(mapToLocation(it)) }
             .flatMap { Observable.fromIterable(it) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -108,8 +133,10 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     }
 
     private fun subscribeToCameraUpdates() {
-        compositeDisposable += Observable.combineLatest(cameraUpdateSubject.debounce(500L, TimeUnit.MILLISECONDS),
-            onMapReadySubject,
+        compositeDisposable += Observable.combineLatest(cameraUpdateSubject
+            .subscribeOn(Schedulers.computation())
+            .debounce(500L, TimeUnit.MILLISECONDS),
+            onMapReadySubject.subscribeOn(Schedulers.computation()),
             BiFunction<List<LatLng>, GoogleMap, Pair<List<LatLng>, GoogleMap>> { locations, map ->
                 locations to map
             })
@@ -134,17 +161,9 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     }
 
     private fun addMarkers(markerMap: MarkerMap) {
-        val iconFactory = IconGenerator(mapView.context).apply {
-            setBackground(null)
-            setContentView(ImageView(mapView.context).apply {
-                layoutParams = ViewGroup.MarginLayoutParams(markerSize, markerSize)
-                setImage(getImageFromType(markerMap.type))
-            })
-        }
-
         markerCollection.addMarker(
             MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()))
+                .icon(getImageFromType(markerMap.type))
                 .position(with(markerMap) { LatLng(latitude, longitude) })
                 .anchor(0.5f, 0.5f)
         )
@@ -172,12 +191,11 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
         }
     }
 
-    @DrawableRes
-    private fun getImageFromType(type: String): Int {
+    private fun getImageFromType(type: String): BitmapDescriptor {
         return if (type == "POOLING") {
-            R.drawable.ic_car
+            carImage
         } else {
-            R.drawable.ic_taxi
+            taxiImage
         }
     }
 

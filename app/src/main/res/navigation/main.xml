@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/destination_list"
         android:name="com.mycars.carshome.fragments.CarListFragment"
-        android:label="CarListFragment"
+        android:label="@string/app.carlist_label"
         tools:layout="@layout/fragment_car_list">
         <action
             android:id="@+id/action_detail"

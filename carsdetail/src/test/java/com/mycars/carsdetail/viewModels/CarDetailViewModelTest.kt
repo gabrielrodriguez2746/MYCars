@@ -1,5 +1,6 @@
 package com.mycars.carsdetail.viewModels
 
+import com.mycars.base.providers.ResourceProvider
 import com.mycars.base.repository.BaseRepository
 import com.mycars.basetest.InstantExecutorExtension
 import com.mycars.carsdata.models.cars.Car
@@ -7,7 +8,6 @@ import com.mycars.carsdata.models.cars.Coordinate
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnMapItems
 import com.mycars.carsdetail.viewModels.CarDetailViewModel.CarDetailViewModelEvents.OnNotFoundCar
 import io.kotlintest.matchers.types.shouldBeInstanceOf
-import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -30,6 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CarDetailViewModelTest {
 
+    private val resourceProvider: ResourceProvider = mockk()
     private val repository: BaseRepository<Any, Int, Car> = mockk()
 
     lateinit var viewModel: CarDetailViewModel
@@ -49,7 +50,7 @@ class CarDetailViewModelTest {
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = spyk(CarDetailViewModel(repository))
+        viewModel = spyk(CarDetailViewModel(resourceProvider, repository))
     }
 
     @Nested
@@ -60,10 +61,13 @@ class CarDetailViewModelTest {
         @Test
         fun `with data form repository`() {
 
+            val latitude = 0.0
+            val longitude = 0.0
             val serverItem = mockk<Car> {
                 every { type } returns ""
-                every { coordinate } returns Coordinate(0.0, 0.0)
+                every { coordinate } returns Coordinate(latitude, longitude)
             }
+            every { resourceProvider.getString(any(), latitude, longitude) } returns ""
             every { repository.getSingleDataByIdentifier(any()) } returns Single.just(serverItem)
 
             viewModel.locateCarById(id)
