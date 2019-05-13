@@ -1,7 +1,8 @@
 package com.mycars.di.modules.main
 
-import com.mycars.carslist.di.modules.CarListViewModelModule
-import com.mycars.carslist.fragments.CarListFragment
+import com.mycars.base.di.FragmentScope
+import com.mycars.carshome.di.modules.CarListViewModelModule
+import com.mycars.carshome.fragments.CarListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,5 +12,6 @@ abstract class CarListFragmentBuilder {
     @ContributesAndroidInjector(
         modules = [CarListViewModelModule::class]
     )
+    @FragmentScope
     abstract fun bindCarListFragment(): CarListFragment
 }

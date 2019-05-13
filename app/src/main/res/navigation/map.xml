@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    app:startDestination="@id/destination_map"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/destination_map"
+        android:name="com.mycars.carshome.fragments.CarMapFragment"
+        android:label="CarMapFragment"
+        tools:layout="@layout/fragment_car_map" />
+</navigation>

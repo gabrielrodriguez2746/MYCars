@@ -38,6 +38,11 @@ class CarRepositoryTest {
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
     }
 
+    @AfterAll
+    fun afterAll() {
+        RxJavaPlugins.reset()
+    }
+
     @Nested
     inner class `get single list data` {
 
@@ -50,34 +55,38 @@ class CarRepositoryTest {
                 every { daoPersistence.getCarsPersistenceList() } returns Maybe.empty()
             }
 
-            @Test
-            fun success() {
-                val output = listOf<Car>()
-                every { daoPersistence.insert(any()) } just runs
-                every { service.getCarWrapper() } returns Single.just(CarWrapper(output))
-                repository.getSingleListData(null)
-                    .test()
-                    .assertValue(output)
+            @Nested
+            inner class `server response` {
+
+                @Test
+                fun success() {
+                    val output = listOf<Car>()
+                    every { repository.getDataFromServer() } returns Single.just(output)
+                    repository.getSingleListData(null)
+                        .test()
+                        .assertValue(output)
+                }
+
+                @Test
+                fun error() {
+                    val output = Throwable()
+                    every { repository.getDataFromServer() } returns Single.error(output)
+                    repository.getSingleListData(null)
+                        .test()
+                        .assertError(output)
+                }
             }
 
-            @Test
-            fun error() {
-                val output = Throwable()
-                every { service.getCarWrapper() } returns Single.error(output)
-                repository.getSingleListData(null)
-                    .test()
-                    .assertError(output)
-            }
         }
 
         @Nested
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
         inner class `with persistence` {
 
             @Test
             fun `not empty`() {
                 val carsPersistence = listOf<Car>(mockk())
                 every { daoPersistence.getCarsPersistenceList() } returns Maybe.just(carsPersistence)
+                every { repository.validateEmptyPersistence(any()) } returns Single.just(carsPersistence)
                 repository.getSingleListData(null)
                     .test()
                     .assertValue(carsPersistence)
@@ -87,19 +96,59 @@ class CarRepositoryTest {
             fun empty() {
                 val output = listOf<Car>(mockk())
                 every { daoPersistence.getCarsPersistenceList() } returns Maybe.just(emptyList())
-                every { repository.getDataFromServer() } returns Single.just(output)
-                every { daoPersistence.insert(any()) } just runs
+                every { repository.validateEmptyPersistence(any()) } returns Single.just(output)
                 repository.getSingleListData(null)
                     .test()
                     .assertValue(output)
             }
         }
+    }
+
+    @Nested
+    inner class `validate empty persistence` {
+
+        @Test
+        fun `empty input`() {
+            val output = listOf<Car>(mockk())
+            every { repository.getDataFromServer() } returns Single.just(output)
+            repository.validateEmptyPersistence(emptyList())
+                .test()
+                .assertValue(output)
+        }
+
+        @Test
+        fun `value input`() {
+            val input = listOf<Car>(mockk())
+            repository.validateEmptyPersistence(input)
+                .test()
+                .assertValue(input)
+        }
 
     }
 
-    @AfterAll
-    fun afterAll() {
-        RxJavaPlugins.reset()
+    @Nested
+    inner class `get data from server` {
+
+        @Test
+        fun success() {
+            val output = listOf<Car>(mockk())
+            every { daoPersistence.insert(any()) } just runs
+            every { service.getCarWrapper() } returns Single.just(CarWrapper(output))
+
+            repository.getDataFromServer()
+                .test()
+                .assertValue(output)
+        }
+
+        @Test
+        fun error() {
+            val outputError = Throwable()
+            every { service.getCarWrapper() } returns Single.error(outputError)
+
+            repository.getDataFromServer()
+                .test()
+                .assertError(outputError)
+        }
     }
 
 }

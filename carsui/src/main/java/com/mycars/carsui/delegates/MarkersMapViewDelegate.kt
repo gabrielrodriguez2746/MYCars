@@ -9,7 +9,7 @@ import kotlin.properties.ReadOnlyProperty
 
 interface MarkersMapViewDelegate : ReadOnlyProperty<MarkersMapView, MarkersMapViewDelegate>, LifecycleObserver {
 
-    fun init(data: Observable<List<MarkerMap>>)
+    fun init(data: List<MarkerMap>)
 
     fun bind(view: MapView)
 

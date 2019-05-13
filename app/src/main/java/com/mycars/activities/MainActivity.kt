@@ -8,11 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.mycars.R
 import com.mycars.base.listeners.OnFragmentInteraction
 import com.mycars.baseui.helpers.setupWithNavController
 import com.mycars.carsdetail.fragments.CarDetailFragment
-import com.mycars.carslist.fragments.CarListFragment
+import com.mycars.carshome.fragments.CarListFragment
 import com.mycars.databinding.ActivityMainBinding
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -36,10 +37,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragment
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         binding.bnHome.setupWithNavController(
-            listOf(R.navigation.main, R.navigation.main),
+            listOf(R.navigation.main, R.navigation.map),
             supportFragmentManager,
             R.id.flNavController
         ).observe(this, Observer { navController ->
+            setupActionBarWithNavController(navController)
             this.navController = navController
         })
     }

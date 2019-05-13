@@ -41,7 +41,7 @@ dependencies {
     implementation project(':carsdata')
     implementation project(':launcher')
     implementation project(':carsnetwork')
-    implementation project(':carslist')
+    implementation project(':carshome')
     implementation project(':carsdetail')
 
     implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXVersion"
