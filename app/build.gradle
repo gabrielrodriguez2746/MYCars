@@ -36,9 +36,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation project(':base')
-    implementation project(':baseui')
-    implementation project(':carsdata')
+    implementation "com.mycars:base:$rootProject.ext.mycarsBaseVersion"
+    implementation "com.mycars:baseui:$rootProject.ext.mycarsBaseUIVersion"
+    implementation "com.mycars:carsdata:$rootProject.ext.mycarsDataVersion"
+
     implementation project(':launcher')
     implementation project(':carsnetwork')
     implementation project(':carshome')
@@ -55,13 +56,15 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$rootProject.ext.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
 
-
     // Network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
     implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
+
+    // Maps
+    implementation "com.google.maps.android:android-maps-utils:$rootProject.ext.mapUtilsVersion"
 
     //Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"

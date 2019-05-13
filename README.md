@@ -11,6 +11,7 @@ MYCars is a simple app to practice with MapView google maps component
 - Clean database with a schedule job after a amont of time.
 - Improve animations.
 - More unit test support.
+- Better support for module versioning (create changelog).
 
 * * *
 
@@ -33,8 +34,8 @@ The project follows a MVVM architecture defined by this components
 * [Model](#model)
 * [Repository](#repository)
 
-The project make each feature independent and the project holds on three base module `base`, `data`, `baseui`. The feature module 
-should just know this three and all the dependencies as mapper and repository will be provided by the `app` module through 
+The project make each feature independent and the project holds on three base module `base`, `carsdata`, `baseui`, `carsui`.
+The feature module should just know this three and all the dependencies as mapper and repository will be provided by the `app` module through
 `Dagger`
 
 * * *

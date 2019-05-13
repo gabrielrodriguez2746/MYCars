@@ -46,10 +46,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation project(':base')
-    implementation project(':baseui')
-    implementation project(':carsdata')
-    implementation project(':carsui')
+    implementation "com.mycars:base:$rootProject.ext.mycarsBaseVersion"
+    implementation "com.mycars:baseui:$rootProject.ext.mycarsBaseUIVersion"
+    implementation "com.mycars:carsdata:$rootProject.ext.mycarsDataVersion"
+    implementation "com.mycars:carsui:$rootProject.ext.mycarsCarsUIVersion"
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.archVersion"
@@ -77,7 +77,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
 
     // Test
-    testImplementation project(':basetest')
+    implementation "com.mycars:basetest:$rootProject.ext.mycarsBaseTestVersion"
     testImplementation "io.mockk:mockk:$rootProject.ext.mockkVersion"
     testImplementation "io.kotlintest:kotlintest-runner-junit4:$rootProject.ext.kotlinTestVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.ext.junit5Version"
