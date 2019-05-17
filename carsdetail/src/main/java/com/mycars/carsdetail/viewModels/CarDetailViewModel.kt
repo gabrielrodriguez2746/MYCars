@@ -74,5 +74,4 @@ class CarDetailViewModel @Inject constructor(
         class OnMapItems(val items: List<MarkerMap>) : CarDetailViewModelEvents()
         class OnAdjustTitle(val title: String) : CarDetailViewModelEvents()
     }
-
 }

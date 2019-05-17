@@ -13,4 +13,3 @@ class ServerLogsInterceptor @Inject constructor(baseConfiguration: BaseConfigura
     }).applyLoggingInterceptorLogs(
         baseConfiguration.areAppLogsEnable()
     )
-

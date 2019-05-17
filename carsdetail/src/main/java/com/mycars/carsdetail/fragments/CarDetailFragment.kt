@@ -31,8 +31,8 @@ class CarDetailFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val getActivityListener : OnFragmentInteraction? get() = activity as? OnFragmentInteraction
-    private val supportActionBar : ActionBar? get() = (activity as AppCompatActivity).supportActionBar
+    private val getActivityListener: OnFragmentInteraction? get() = activity as? OnFragmentInteraction
+    private val supportActionBar: ActionBar? get() = (activity as AppCompatActivity).supportActionBar
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -58,7 +58,6 @@ class CarDetailFragment : Fragment() {
             addObserver(viewModel)
             addObserver(binding.mvCars)
         }
-
     }
 
     private fun processEvents(event: CarDetailViewModelEvents) {

@@ -9,9 +9,16 @@ interface CarsService {
 
     @GET(".")
     fun getCarWrapper(
-        @Query("p1Lat") p1Lat: Double = 53.694865,
-        @Query("p1Lon") p1Lon: Double = 9.757589,
-        @Query("p2Lat") p2Lat: Double = 53.394655,
-        @Query("p2Lon") p2Lon: Double = 10.099891
+        @Query("p1Lat") p1Lat: Double = P1_LATITUDE,
+        @Query("p1Lon") p1Lon: Double = P1_LONGITUDE,
+        @Query("p2Lat") p2Lat: Double = P2_LATITUDE,
+        @Query("p2Lon") p2Lon: Double = P2_LONGITUDE
     ): Single<CarWrapper>
+
+    companion object {
+        private const val P1_LATITUDE = 53.694865
+        private const val P1_LONGITUDE = 9.757589
+        private const val P2_LATITUDE = 53.394655
+        private const val P2_LONGITUDE = 10.099891
+    }
 }

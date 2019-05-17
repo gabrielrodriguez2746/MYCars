@@ -18,6 +18,4 @@ object CarDataBaseModule {
             .fallbackToDestructiveMigration()
             .build()
     }
-
-
 }

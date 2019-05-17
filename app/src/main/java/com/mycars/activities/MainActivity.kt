@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragment
     // TODO This should be delegate
     private val changeBoundsTransition by lazy {
         ChangeBounds().apply {
-            duration = 400
+            duration = ANIMATION_DURATION
             interpolator = AnticipateOvershootInterpolator(1.0f)
         }
     }
@@ -121,5 +121,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragment
     private fun createActivityTransition(constraintSet: ConstraintSet) {
         TransitionManager.beginDelayedTransition(binding.clParent, changeBoundsTransition)
         constraintSet.applyTo(binding.clParent)
+    }
+
+    companion object {
+        private const val ANIMATION_DURATION = 400L
     }
 }

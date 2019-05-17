@@ -72,7 +72,7 @@ class CarMapsViewModelTest {
 
                 val serverItem = mockk<Car> {
                     every { type } returns ""
-                    every { coordinate } returns Coordinate(0.0,0.0)
+                    every { coordinate } returns Coordinate(0.0, 0.0)
                 }
                 every { repository.getSingleListData(any()) } returns Single.just(listOf(serverItem))
 
@@ -95,6 +95,4 @@ class CarMapsViewModelTest {
         viewModel.onDestroy()
         verify(exactly = 1) { viewModel.dispose() }
     }
-
-
 }

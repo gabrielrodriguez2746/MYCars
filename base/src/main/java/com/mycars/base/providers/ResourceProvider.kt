@@ -58,6 +58,5 @@ interface ResourceProvider {
      *         does not exist.
      */
     @ColorInt
-    fun getColor(@ColorRes id: Int) : Int
-
+    fun getColor(@ColorRes id: Int): Int
 }

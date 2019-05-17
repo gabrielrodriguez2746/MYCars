@@ -42,8 +42,12 @@ class CarWrapperDeserializer @Inject constructor() : JsonDeserializer<CarWrapper
             val (latitude, longitude) = with(coordinateObject) {
                 getGenericOrDefault("latitude", defaultDouble) to getGenericOrDefault("longitude", defaultDouble)
             }
-            Car(id = id, type = type, heading = heading, coordinate = Coordinate(latitude.toDouble(), longitude.toDouble()))
+            Car(
+                id = id,
+                type = type,
+                heading = heading,
+                coordinate = Coordinate(latitude.toDouble(), longitude.toDouble())
+            )
         }
     }
-
 }

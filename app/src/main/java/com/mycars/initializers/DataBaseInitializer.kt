@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class DataBaseInitializer @Inject constructor(private val database: CarsDatabase) : Initializer {
 
-    // TODO Improve this for a more robust implementation, this make sure that every new app launch delete local database
+    // TODO Improve this for a more robust implementation,
+    //  this make sure that every new app launch delete local database
     override fun init() {
         Completable.fromCallable { database.carDatabase().deleteCarsPersitence() }
             .subscribeOn(Schedulers.io())

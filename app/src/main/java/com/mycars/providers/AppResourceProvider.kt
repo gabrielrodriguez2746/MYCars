@@ -9,6 +9,7 @@ class AppResourceProvider @Inject constructor(private val context: Context) : Re
 
     override fun getString(id: Int): String = context.getString(id)
 
+    @Suppress("SpreadOperator")
     override fun getString(id: Int, vararg args: Any?): String = context.getString(id, *args)
 
     override fun getStringArray(id: Int): Array<String> = context.resources.getStringArray(id)

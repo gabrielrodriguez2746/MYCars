@@ -12,5 +12,4 @@ abstract class CarsServiceModule {
     @Binds
     @Reusable
     abstract fun bindPopularService(service: MYCarsService): CarsService
-
 }

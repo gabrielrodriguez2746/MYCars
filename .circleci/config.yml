@@ -99,6 +99,25 @@ jobs:
           name: Run lint analyzer
           command: ./gradlew lintDebug
 
+  detekt:
+    <<: *config_android
+    steps:
+      - checkout
+      - <<: *gen_cache_key
+      - <<: *restore_cache
+      - run:
+          name: Run Detekt
+          command: ./gradlew detektCheck
+      - run:
+          name: Save test results
+          command: |
+            ./scripts/move_results.sh *detekt.xml detekt_results
+          when: always
+      - store_test_results:
+          path: ~/detekt_results
+      - store_artifacts:
+          path: ~/detekt_results
+
 workflows:
   version: 2
   check:
@@ -116,5 +135,8 @@ workflows:
           requires:
             - config_cache
       - lint:
+          requires:
+            - config_cache
+      - detekt:
           requires:
             - config_cache

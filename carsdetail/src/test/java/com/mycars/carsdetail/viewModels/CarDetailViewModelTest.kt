@@ -72,7 +72,6 @@ class CarDetailViewModelTest {
 
             viewModel.locateCarById(id)
             viewModel.events.value.shouldBeInstanceOf<OnMapItems>()
-
         }
 
         @Test
@@ -114,5 +113,4 @@ class CarDetailViewModelTest {
             verify(exactly = 0) { viewModel.dispose() }
         }
     }
-
 }

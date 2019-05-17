@@ -76,7 +76,6 @@ class CarRepositoryTest {
                         .assertError(output)
                 }
             }
-
         }
 
         @Nested
@@ -123,7 +122,6 @@ class CarRepositoryTest {
                 .test()
                 .assertValue(input)
         }
-
     }
 
     @Nested
@@ -150,5 +148,4 @@ class CarRepositoryTest {
                 .assertError(outputError)
         }
     }
-
 }

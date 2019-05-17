@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply from: "$project.rootDir/tools/ktlint.gradle"
+apply from: "$project.rootDir/tools/detekt.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -10,7 +12,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
     }
 
     dataBinding {

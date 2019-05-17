@@ -53,7 +53,6 @@ class RxCallAdapterWrapperTest {
             val input = Throwable()
             adapter.asRetrofitException(input) shouldBe input
         }
-
     }
 
     @Nested
@@ -76,7 +75,6 @@ class RxCallAdapterWrapperTest {
                 shouldBeInstanceOf<Completable>()
                 (this as Completable).test().assertError(expectedError)
             }
-
         }
 
         @Test
@@ -88,7 +86,6 @@ class RxCallAdapterWrapperTest {
                 shouldBeInstanceOf<Single<*>>()
                 (this as Single<*>).test().assertError(expectedError)
             }
-
         }
 
         @Test
@@ -132,8 +129,6 @@ class RxCallAdapterWrapperTest {
             shouldThrow<RuntimeException> {
                 adapter.adapt(call)
             }
-
         }
     }
-
 }

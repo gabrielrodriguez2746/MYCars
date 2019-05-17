@@ -15,5 +15,4 @@ class MarkersMapView @JvmOverloads constructor(
     init {
         bind(this)
     }
-
 }
