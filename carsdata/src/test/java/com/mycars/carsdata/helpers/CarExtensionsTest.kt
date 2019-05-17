@@ -27,5 +27,4 @@ class CarExtensionsTest {
             car.isCarValid() shouldBe output
         }
     }
-
 }

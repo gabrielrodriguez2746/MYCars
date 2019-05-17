@@ -77,7 +77,6 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
         view.getMapAsync {
             onMapReadySubject.onNext(it)
             markerManager = MarkerManager(it)
-            onResume()
         }
     }
 
@@ -135,7 +134,7 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
     private fun subscribeToCameraUpdates() {
         compositeDisposable += Observable.combineLatest(cameraUpdateSubject
             .subscribeOn(Schedulers.computation())
-            .debounce(500L, TimeUnit.MILLISECONDS),
+            .debounce(CAMERA_CHANGES_DEBOUNCE, TimeUnit.MILLISECONDS),
             onMapReadySubject.subscribeOn(Schedulers.computation()),
             BiFunction<List<LatLng>, GoogleMap, Pair<List<LatLng>, GoogleMap>> { locations, map ->
                 locations to map
@@ -155,8 +154,7 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
             } else {
                 CameraUpdateFactory.newLatLngZoom(bounds.center, MAX_ZOOM_PREFERENCE)
             }
-            animateCamera(cameraUpdate, 500, null)
-
+            animateCamera(cameraUpdate, CAMERA_ANIMATION_DURATION, null)
         }
     }
 
@@ -165,7 +163,7 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
             MarkerOptions()
                 .icon(getImageFromType(markerMap.type))
                 .position(with(markerMap) { LatLng(latitude, longitude) })
-                .anchor(0.5f, 0.5f)
+                .anchor(MARKER_ANCHOR, MARKER_ANCHOR)
         )
     }
 
@@ -205,6 +203,8 @@ class MyMarkersMapViewDelegate : MarkersMapViewDelegate {
 
     companion object {
         private const val MAX_ZOOM_PREFERENCE = 15.5f
+        private const val MARKER_ANCHOR = 0.5f
+        private const val CAMERA_ANIMATION_DURATION = 500
+        private const val CAMERA_CHANGES_DEBOUNCE = 500L
     }
-
 }

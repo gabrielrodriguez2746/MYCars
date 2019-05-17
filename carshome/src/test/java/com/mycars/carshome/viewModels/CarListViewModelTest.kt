@@ -4,7 +4,6 @@ import com.mycars.base.mappers.BaseMapper
 import com.mycars.base.repository.BaseRepository
 import com.mycars.basetest.InstantExecutorExtension
 import com.mycars.carsdata.models.cars.Car
-import com.mycars.carshome.models.CarRecyclerItem
 import com.mycars.carshome.models.CarWidgetItem
 import com.mycars.carshome.viewModels.CarListViewModel.CarListViewModelEvents.OnEmptyResults
 import com.mycars.carshome.viewModels.CarListViewModel.CarListViewModelEvents.OnItemsUpdated
@@ -97,6 +96,4 @@ class CarListViewModelTest {
         viewModel.onDestroy()
         verify(exactly = 1) { viewModel.dispose() }
     }
-
-
 }

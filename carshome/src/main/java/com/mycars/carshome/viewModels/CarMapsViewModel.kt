@@ -62,5 +62,4 @@ class CarMapsViewModel @Inject constructor(
         class OnRequestError(val errorMessage: String?) : CarMapsViewModelEvents()
         class OnMapItems(val items: List<MarkerMap>) : CarMapsViewModelEvents()
     }
-
 }

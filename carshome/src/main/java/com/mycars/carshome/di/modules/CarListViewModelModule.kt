@@ -9,7 +9,6 @@ import com.mycars.carshome.viewModels.CarListViewModel
 import com.mycars.carsdata.models.cars.Car
 import dagger.Binds
 import dagger.Module
-import dagger.Reusable
 import dagger.multibindings.IntoMap
 
 @Module

@@ -14,5 +14,4 @@ abstract class CarMapViewModelModule {
     @IntoMap
     @ViewModelKey(CarMapsViewModel::class)
     abstract fun bindCarMapsViewModel(viewModel: CarMapsViewModel): ViewModel
-
 }

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: "$project.rootDir/tools/ktlint.gradle"
+apply from: "$project.rootDir/tools/detekt.gradle"
 apply from: "$project.rootDir/tools/app_versioning.gradle"
 apply from: "$project.rootDir/tools/app_update_key.gradle"
 

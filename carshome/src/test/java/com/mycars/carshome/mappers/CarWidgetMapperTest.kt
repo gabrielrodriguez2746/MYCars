@@ -68,5 +68,4 @@ class CarWidgetMapperTest {
             mapper.getImageFromType(type) shouldBe output
         }
     }
-
 }

@@ -22,5 +22,4 @@ object CallAdapterFactoryModule {
             RxJava2CallAdapterFactory.create()
         )
     }
-
 }

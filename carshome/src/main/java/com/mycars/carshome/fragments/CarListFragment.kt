@@ -49,8 +49,12 @@ class CarListFragment : Fragment() {
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         metrics
     }
-    private val itemVerticalHeight by lazy { (displayMetrics.heightPixels * 0.33).toInt() }
-    private val itemHorizontalHeight by lazy { (displayMetrics.heightPixels * 0.18).toInt() }
+    private val itemVerticalHeight by lazy {
+        (displayMetrics.heightPixels * VERTICAL_WIDGET_HEIGHT_PERCENTAGE).toInt()
+    }
+    private val itemHorizontalHeight by lazy {
+        (displayMetrics.heightPixels * HORIZONTAL_WIDGET_HEIGHT_PERCENTAGE).toInt()
+    }
 
     private val getActivityListener: OnFragmentInteraction? get() = activity as? OnFragmentInteraction
 
@@ -85,7 +89,6 @@ class CarListFragment : Fragment() {
         viewModel.events.observe(viewLifecycleOwner, Observer(::processEvents))
 
         activity?.lifecycle?.addObserver(viewModel)
-
     }
 
     private fun processEvents(event: CarListViewModelEvents) {
@@ -169,5 +172,8 @@ class CarListFragment : Fragment() {
 
     companion object {
         const val CAR_LIST = "CAR_LIST"
+
+        private const val VERTICAL_WIDGET_HEIGHT_PERCENTAGE = 0.33
+        private const val HORIZONTAL_WIDGET_HEIGHT_PERCENTAGE = 0.18
     }
 }

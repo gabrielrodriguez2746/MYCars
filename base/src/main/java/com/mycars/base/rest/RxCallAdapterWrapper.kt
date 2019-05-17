@@ -21,6 +21,7 @@ class RxCallAdapterWrapper constructor(
         return baseAdapter.responseType()
     }
 
+    @Suppress("TooGenericExceptionThrown")
     override fun adapt(call: Call<Any>): Any {
 
         return when (val adaptedCall = baseAdapter.adapt(call)) {

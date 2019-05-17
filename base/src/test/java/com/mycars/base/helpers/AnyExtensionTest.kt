@@ -12,11 +12,11 @@ class AnyExtensionTest {
         private val defaultValue = "Hello Word"
 
         @Test
+        @Suppress("TooGenericExceptionThrown")
         fun `default Value`() {
             tryOrDefault({
                 throw Exception()
             }, defaultValue) shouldBe defaultValue
-
         }
 
         @Test
@@ -26,7 +26,5 @@ class AnyExtensionTest {
                 expectedValue
             }, defaultValue) shouldBe expectedValue
         }
-
     }
-
 }

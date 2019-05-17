@@ -17,6 +17,9 @@ import javax.inject.Singleton
 @Module
 object CarsClientModule {
 
+    private const val READ_TIME_OUT = 5L
+    private const val CONNECT_TIME_OUT = 5L
+
     @Provides
     @Reusable
     @JvmStatic
@@ -24,8 +27,8 @@ object CarsClientModule {
         interceptors: @JvmSuppressWildcards Set<Interceptor>
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
-            readTimeout(5, TimeUnit.SECONDS)
-            connectTimeout(5, TimeUnit.SECONDS)
+            readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
+            connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
             interceptors.forEach { interceptor ->
                 addInterceptor(interceptor)
             }
@@ -48,5 +51,4 @@ object CarsClientModule {
             .addCallAdapterFactory(callAdapterFactory)
             .build()
     }
-
 }

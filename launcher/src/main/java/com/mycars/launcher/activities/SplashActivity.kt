@@ -18,5 +18,4 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this, nextActivityClass.getClassIntent().java))
         finish()
     }
-
 }

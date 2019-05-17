@@ -46,5 +46,4 @@ class CarRepository @Inject constructor(
             .observeOn(Schedulers.io())
             .doOnSuccess { dao.insert(it) }
     }
-
 }

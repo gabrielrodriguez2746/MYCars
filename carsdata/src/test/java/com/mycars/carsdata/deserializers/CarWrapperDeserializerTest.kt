@@ -72,11 +72,9 @@ class CarWrapperDeserializerTest {
 
             deserializer.deserialize(input, mockk(), mockk()).cars shouldBe listOf(expected)
         }
-
     }
 
     companion object {
         private const val DATA = "data.json"
     }
-
 }

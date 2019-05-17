@@ -12,5 +12,4 @@ interface BaseMapper<in R, T> {
      */
     @Throws(Throwable::class)
     fun getFromElement(element: R): T
-
 }

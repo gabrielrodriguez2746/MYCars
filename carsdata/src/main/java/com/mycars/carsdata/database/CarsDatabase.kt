@@ -12,5 +12,5 @@ import com.mycars.carsdata.models.cars.Car
 )
 abstract class CarsDatabase : RoomDatabase() {
 
-    abstract fun carDatabase() : CarsDao
+    abstract fun carDatabase(): CarsDao
 }

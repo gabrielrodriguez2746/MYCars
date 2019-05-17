@@ -57,7 +57,6 @@ class CarMapFragment : Fragment() {
             addObserver(viewModel)
             addObserver(binding.mvCars)
         }
-
     }
 
     override fun onLowMemory() {

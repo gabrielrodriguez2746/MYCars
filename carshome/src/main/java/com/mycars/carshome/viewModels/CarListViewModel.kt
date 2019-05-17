@@ -48,7 +48,6 @@ class CarListViewModel @Inject constructor(
                 } else {
                     _events.postValue(OnItemsUpdated(it))
                 }
-
             })
     }
 
@@ -66,5 +65,4 @@ class CarListViewModel @Inject constructor(
         class OnRequestError(val errorMessage: String?) : CarListViewModelEvents()
         class OnItemsUpdated(val items: List<CarRecyclerItem>) : CarListViewModelEvents()
     }
-
 }

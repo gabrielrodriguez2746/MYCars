@@ -20,5 +20,4 @@ abstract class BaseInterceptorModule {
     @Reusable
     @IntoSet
     abstract fun bindHeadersInterceptor(interceptor: HeadersInterceptor): Interceptor
-
 }

@@ -26,6 +26,5 @@ abstract class CarsRepositoryModule {
         fun provideCarDao(database: CarsDatabase): CarsDao {
             return database.carDatabase()
         }
-
     }
 }

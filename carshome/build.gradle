@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply from: "$project.rootDir/tools/ktlint.gradle"
+apply from: "$project.rootDir/tools/detekt.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -49,7 +51,7 @@ dependencies {
     implementation "com.mycars:base:$rootProject.ext.mycarsBaseVersion"
     implementation "com.mycars:baseui:$rootProject.ext.mycarsBaseUIVersion"
     implementation "com.mycars:carsdata:$rootProject.ext.mycarsDataVersion"
-    implementation "com.mycars:carsui:$rootProject.ext.mycarsCarsUIVersion"
+    implementation "com.mycars:carsui:$rootProject.ext.mycarsUIVersion"
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.archVersion"
