@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -22,13 +21,13 @@ import com.mycars.databinding.ActivityMainBinding
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragmentInteraction {
+class MainActivity : AppCompatActivity(), HasAndroidInjector, OnFragmentInteraction {
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
 
     private lateinit var navController: NavController
     private val isNavControllerInitialized: Boolean get() = ::navController.isInitialized
@@ -116,7 +115,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, OnFragment
         toast?.show()
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = fragmentInjector
 
     private fun createActivityTransition(constraintSet: ConstraintSet) {
         TransitionManager.beginDelayedTransition(binding.clParent, changeBoundsTransition)

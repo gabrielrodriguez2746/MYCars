@@ -13,6 +13,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$gradleBuildToolsVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+        classpath "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.1.0"
     }
 }
 
@@ -20,12 +21,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url uri("$rootDir/libs/") }
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
 
 apply from: "$project.rootDir/tools/global-dependencies.gradle" 
