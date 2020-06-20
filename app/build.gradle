@@ -31,20 +31,25 @@ android {
     lintOptions{
         disable 'MissingDefaultResource'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.mycars:base:$rootProject.ext.mycarsBaseVersion"
-    implementation "com.mycars:baseui:$rootProject.ext.mycarsBaseUIVersion"
-    implementation "com.mycars:carsdata:$rootProject.ext.mycarsDataVersion"
+    implementation project(':modules:base')
+    implementation project(':modules:baseui')
+    implementation project(':modules:carsdata')
 
-    implementation project(':launcher')
-    implementation project(':carsnetwork')
-    implementation project(':carshome')
-    implementation project(':carsdetail')
+    implementation project(':features:launcher')
+    implementation project(':features:carsnetwork')
+    implementation project(':features:carshome')
+    implementation project(':features:carsdetail')
 
     implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXVersion"
     implementation "androidx.core:core-ktx:$rootProject.ext.coreXVersion"

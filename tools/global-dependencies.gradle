@@ -9,31 +9,24 @@ ext {
     ktlintVersion = '0.29.0'
     detektVersion = '1.0.0.RC8'
 
-    // Internal
-    mycarsBaseVersion = '1.2.0@aar'
-    mycarsBaseTestVersion = '1.1.0@aar'
-    mycarsBaseUIVersion = '1.1.0@aar'
-    mycarsDataVersion = '1.2.0@aar'
-    mycarsUIVersion = '1.1.0@aar'
-
     // Kotlin
-    kotlin_version = '1.3.31'
+    kotlin_version = '1.3.72'
 
     //Androidx
-    androidXVersion = '1.0.2'
-    coreXVersion = '1.0.2'
+    androidXVersion = '1.1.0'
+    coreXVersion = '1.3.0'
 
     // Dagger
-    daggerVersion = '2.20'
+    daggerVersion = '2.25.3'
 
     // RxJava
     rxAndroidVersion = '2.1.1'
     rxKotlinVersion = '2.3.0'
 
     // Networking
-    retrofitVersion = '2.4.0'
-    gsonVersion = '2.8.1'
-    okhttpVersion = '3.5.0'
+    retrofitVersion = '2.7.2'
+    gsonVersion = '2.8.5'
+    okhttpVersion = '4.1.0'
     okioVersion = '1.11.0'
 
     // Architecture components

@@ -5,19 +5,8 @@ import com.mycars.di.component.DaggerMainComponent
 
 class MyCarsApplication : InjectableApplication() {
 
-    companion object {
-        lateinit var instance: MyCarsApplication
-            private set
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        instance = this
-    }
-
     override fun initializeInjector() {
-        DaggerMainComponent.builder().application(this)
-            .build()
+        DaggerMainComponent.factory().create(this)
             .apply {
                 inject(this@MyCarsApplication)
             }
