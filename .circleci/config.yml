@@ -9,7 +9,7 @@ config_android: &config_android
   docker:
     - image: circleci/android:api-28-alpha
   parallelism: 1
-  resource_class: xlarge
+  resource_class: medium
   working_directory: ~/circlci
   environment:
     GRADLE_OPTS: "-Xmx6400m -Dorg.gradle.daemon=false"
