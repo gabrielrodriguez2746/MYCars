@@ -1,11 +1,10 @@
-package com.mycars.providers
+package com.mycars.base.providers
 
 import android.content.Context
 import androidx.core.content.ContextCompat
-import com.mycars.base.providers.ResourceProvider
 import javax.inject.Inject
 
-class AppResourceProvider @Inject constructor(private val context: Context) : ResourceProvider {
+class ApplicationResourceProvider @Inject constructor(private val context: Context) : ResourceProvider {
 
     override fun getString(id: Int): String = context.getString(id)
 
