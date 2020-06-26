@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class MainActivityBuilder {
+abstract class CarsModule {
 
     @ContributesAndroidInjector(
         modules = [
